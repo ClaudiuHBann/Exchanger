@@ -1,0 +1,44 @@
+﻿@{
+  ViewData["Title"] = "Profile";
+}
+
+<div class="profile-split">
+    <div class="profile-split-left">
+    @{
+      var profile = (Exchanger.Models.Profile.ProfileViewModel?)ViewData["Profile"];
+
+      <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
+      <div class="profile-split-left-name">@profile?.Name</div>
+      <div class="profile-split-left-description">@profile?.Description</div>
+
+      <div class="text-align-center margin-y font-size-bigger">Contact:</div>
+      <div class="profile-split-left-phone">Phone: @profile?.Phone</div>
+      <div class="profile-split-left-email">Email: @profile?.Email</div>
+      
+      <div class="text-align-center margin-y font-size-bigger">Location:</div>
+      <div class="profile-split-left-country">Country: @profile?.Country</div>
+      <div class="profile-split-left-city">City: @profile?.City</div>
+      
+      <div class="profile-split-left-rating margin-y font-size-bigger">Rating: ⭐⭐⭐⭐⭐</div>
+    }
+    </div>
+
+    <div class="profile-split-right">
+        <h2 class="text-center">Your Offers</h2>
+
+        <ul class="offers">
+      @{
+        var offers = (List<Exchanger.Models.Offer.OfferViewModel>?)ViewData["Offers"];
+        for (int i = 0; i < offers?.Count; i++)
+        {
+            <li>
+                <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+                <div class="offers-li-items">@offers[i].ItemsToGive.Count items to offer</div>
+                <div class="offers-li-description">Anonymous wants to exchange @offers[i].ItemsToGive.Count items for @offers[i].ItemsToReceive?.Count items.</div>
+                <img class="offers-li-images" src="image/itemUnknown.png" />
+            </li>
+        }
+      }
+        </ul>
+    </div>
+</div>
