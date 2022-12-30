@@ -35,9 +35,9 @@ namespace Exchanger.Controllers.Home
                             Name = "Item1",
                             Images = new()
                             {
-                                "Image11.png",
-                                "Image12.png",
-                                "Image13.png"
+                                "image/itemUnknown.png",
+                                "image/itemUnknown.png",
+                                "image/itemUnknown.png"
                             }
                         },
                         new()
@@ -46,9 +46,9 @@ namespace Exchanger.Controllers.Home
                             Name = "Item2",
                             Images = new()
                             {
-                                "Image21.png",
-                                "Image22.png",
-                                "Image23.png"
+                                "image/itemUnknown.png",
+                                "image/itemUnknown.png",
+                                "image/itemUnknown.png"
                             }
                         },
                         new()
@@ -57,9 +57,9 @@ namespace Exchanger.Controllers.Home
                             Name = "Item3",
                             Images = new()
                             {
-                                "Image31.png",
-                                "Image32.png",
-                                "Image33.png"
+                                "image/itemUnknown.png",
+                                "image/itemUnknown.png",
+                                "image/itemUnknown.png"
                             }
                         }
                     },
@@ -68,7 +68,7 @@ namespace Exchanger.Controllers.Home
             };
             offers.First().ItemsToReceive = offers.First().ItemsToGive;
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 69; i++)
             {
                 offers.Add(offers.First());
             }
