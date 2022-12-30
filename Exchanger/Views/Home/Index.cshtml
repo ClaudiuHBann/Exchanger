@@ -13,7 +13,15 @@
             <img class="offers-li-profile-image" src="image/userUnknown.png"/>
             <div class="offers-li-items">@offers[i].ItemsToGive.Count items to offer</div>
             <div class="offers-li-description">Anonymous wants to exchange @offers[i].ItemsToGive.Count items for @offers[i].ItemsToReceive?.Count items.</div>
-            <img class="offers-li-images" src="image/itemUnknown.png" />
+            <div class="offers-li-images-container">
+                @for (int j = 0; j < offers[i]?.ItemsToGive.Count; j++)
+                {
+                  @for (int k = 0; k < offers[i]?.ItemsToGive[j].Images.Count; k++)
+                  {
+                      <img class="offers-li-images-item" src="@offers[i]?.ItemsToGive[j].Images[k]" />     
+                  }
+                }
+            </div>
         </li>
     }
   }

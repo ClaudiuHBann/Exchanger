@@ -11,15 +11,16 @@
       <div class="profile-split-left-name">@profile?.Name</div>
       <div class="profile-split-left-description">@profile?.Description</div>
 
-      <div class="text-align-center margin-y font-size-bigger">Contact:</div>
+      <div class="margin-y font-size-bigger">Contact:</div>
       <div class="profile-split-left-phone">Phone: @profile?.Phone</div>
       <div class="profile-split-left-email">Email: @profile?.Email</div>
       
-      <div class="text-align-center margin-y font-size-bigger">Location:</div>
+      <div class="margin-y font-size-bigger">Location:</div>
       <div class="profile-split-left-country">Country: @profile?.Country</div>
       <div class="profile-split-left-city">City: @profile?.City</div>
       
-      <div class="profile-split-left-rating margin-y font-size-bigger">Rating: ⭐⭐⭐⭐⭐</div>
+      <div class="margin-y font-size-bigger">Rating:</div>
+      <div class="profile-split-left-rating">⭐⭐⭐⭐⭐</div>
     }
     </div>
 
@@ -35,7 +36,15 @@
                 <img class="offers-li-profile-image" src="image/userUnknown.png"/>
                 <div class="offers-li-items">@offers[i].ItemsToGive.Count items to offer</div>
                 <div class="offers-li-description">Anonymous wants to exchange @offers[i].ItemsToGive.Count items for @offers[i].ItemsToReceive?.Count items.</div>
-                <img class="offers-li-images" src="image/itemUnknown.png" />
+                <div class="offers-li-images-container">
+                @for (int j = 0; j < offers[i]?.ItemsToGive.Count; j++)
+                {
+                    @for (int k = 0; k < offers[i]?.ItemsToGive[j].Images.Count; k++)
+                    {
+                        <img class="offers-li-images-item" src="@offers[i]?.ItemsToGive[j].Images[k]" />     
+                    }
+                }
+                </div>
             </li>
         }
       }
