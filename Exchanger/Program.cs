@@ -1,3 +1,6 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Exchanger.Data;
 namespace Exchanger
 {
     public class Program
@@ -5,6 +8,8 @@ namespace Exchanger
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<ExchangerContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("ExchangerContext") ?? throw new InvalidOperationException("Connection string 'ExchangerContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
