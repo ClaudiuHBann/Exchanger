@@ -10,5 +10,6 @@ namespace Exchanger.Data
 
         public DbSet<Account> Account { get; set; }
         public DbSet<Profile> Profile { get; set; }
+        public DbSet<Offer> Offer { get; set; }
     }
 }

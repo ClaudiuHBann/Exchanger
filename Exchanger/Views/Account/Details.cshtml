@@ -39,10 +39,15 @@
                 <div class="offers-li-items">@offers[i].Title</div>
                 <div class="offers-li-description">@offers[i].Description</div>
                 <div class="offers-li-images-container">
+                @{
+                    /*
+                     
                     @for (int j = 0; j < offers[i]?.Images.Count; j++)
                     {
                         <img class="offers-li-images-item" src="@offers[i]?.Images[j]" />     
                     }
+                     */
+                }
                 </div>
             </li>
         }
