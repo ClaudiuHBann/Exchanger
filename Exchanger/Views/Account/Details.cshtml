@@ -1,4 +1,4 @@
-﻿@model Exchanger.Models.Profile.Account
+﻿@model           Account
 
 @{
   ViewData["Title"] = "Profile";
@@ -7,7 +7,7 @@
 <div class="profile-split">
     <div class="profile-split-left">
     @{
-      var profile = (Exchanger.Models.Profile.Profile?)ViewData["Profile"];
+      var profile = (Profile?)ViewData["Profile"];
 
       <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
       <div class="profile-split-left-name">@profile?.Name</div>
@@ -31,21 +31,18 @@
 
         <ul class="offers">
       @{
-        var offers = (List<Exchanger.Models.Offer.OfferViewModel>?)ViewData["Offers"];
+        var offers = (List<Offer>?)ViewData["Offers"];
         for (int i = 0; i < offers?.Count; i++)
         {
             <li>
                 <img class="offers-li-profile-image" src="image/userUnknown.png"/>
-                <div class="offers-li-items">@offers[i].ItemsToGive.Count items to offer</div>
-                <div class="offers-li-description">Anonymous wants to exchange @offers[i].ItemsToGive.Count items for @offers[i].ItemsToReceive?.Count items.</div>
+                <div class="offers-li-items">@offers[i].Title</div>
+                <div class="offers-li-description">@offers[i].Description</div>
                 <div class="offers-li-images-container">
-                @for (int j = 0; j < offers[i]?.ItemsToGive.Count; j++)
-                {
-                    @for (int k = 0; k < offers[i]?.ItemsToGive[j].Images.Count; k++)
+                    @for (int j = 0; j < offers[i]?.Images.Count; j++)
                     {
-                        <img class="offers-li-images-item" src="@offers[i]?.ItemsToGive[j].Images[k]" />     
+                        <img class="offers-li-images-item" src="@offers[i]?.Images[j]" />     
                     }
-                }
                 </div>
             </li>
         }

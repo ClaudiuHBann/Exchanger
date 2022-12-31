@@ -1,93 +1,157 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-using Exchanger.Models.Offer;
-using Exchanger.Models.Profile;
+using Exchanger.Data;
+using Exchanger.Models;
 
 namespace Exchanger.Controllers
 {
     public class ProfileController : Controller
     {
-        public IActionResult Index()
+        private readonly ExchangerContext _context;
+
+        public ProfileController(ExchangerContext context)
         {
-            if (false)
-            {
-                Test();
-                return View();
-            }
-            else
-            {
-                return Redirect("~/Account/LogIn");
-            }
+            _context = context;
         }
 
-        void Test()
+        // GET: ProfileViewModels
+        public async Task<IActionResult> Index()
         {
-            List<OfferViewModel> offers = new()
-            {
-                new()
-                {
-                    Id = 1,
-                    ItemsToGive = new()
-                    {
-                        new()
-                        {
-                            Id = 1,
-                            Name = "Item1",
-                            Images = new()
-                            {
-                                "image/itemUnknown.png",
-                                "image/itemUnknown.png",
-                                "image/itemUnknown.png"
-                            }
-                        },
-                        new()
-                        {
-                            Id = 2,
-                            Name = "Item2",
-                            Images = new()
-                            {
-                                "image/itemUnknown.png",
-                                "image/itemUnknown.png",
-                                "image/itemUnknown.png"
-                            }
-                        },
-                        new()
-                        {
-                            Id = 3,
-                            Name = "Item3",
-                            Images = new()
-                            {
-                                "image/itemUnknown.png",
-                                "image/itemUnknown.png",
-                                "image/itemUnknown.png"
-                            }
-                        }
-                    },
-                    Description = "ceva123"
-                }
-            };
-            offers.First().ItemsToReceive = offers.First().ItemsToGive;
+            return View(await _context.Profile.ToListAsync());
+        }
 
-            for (int i = 0; i < 69; i++)
+        // GET: ProfileViewModels/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Profile == null)
             {
-                offers.Add(offers.First());
+                return NotFound();
             }
 
-            ViewData["Offers"] = offers;
-
-            Profile profile = new()
+            var profileViewModel = await _context.Profile
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (profileViewModel == null)
             {
-                Avatar = "image/userUnknown.png",
-                City = "Craiova",
-                Country = "Romania",
-                Description = "Un bulangiu si juma :P... ca na csf naicsf",
-                Email = "dennis69@gmail.com",
-                Name = "Jnitzi",
-                Phone = "0770337470",
-                Rating = 3.4f
-            };
+                return NotFound();
+            }
 
-            ViewData["Profile"] = profile;
+            return View(profileViewModel);
+        }
+
+        // GET: ProfileViewModels/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: ProfileViewModels/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,IdAccount,Avatar,Name,Description,Phone,Email,Country,City,Rating")] Profile profileViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(profileViewModel);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(profileViewModel);
+        }
+
+        // GET: ProfileViewModels/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Profile == null)
+            {
+                return NotFound();
+            }
+
+            var profileViewModel = await _context.Profile.FindAsync(id);
+            if (profileViewModel == null)
+            {
+                return NotFound();
+            }
+            return View(profileViewModel);
+        }
+
+        // POST: ProfileViewModels/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IdAccount,Avatar,Name,Description,Phone,Email,Country,City,Rating")] Profile profileViewModel)
+        {
+            if (id != profileViewModel.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(profileViewModel);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProfileViewModelExists(profileViewModel.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(profileViewModel);
+        }
+
+        // GET: ProfileViewModels/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Profile == null)
+            {
+                return NotFound();
+            }
+
+            var profileViewModel = await _context.Profile
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (profileViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(profileViewModel);
+        }
+
+        // POST: ProfileViewModels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Profile == null)
+            {
+                return Problem("Entity set 'ExchangerContext.Profile'  is null.");
+            }
+            var profileViewModel = await _context.Profile.FindAsync(id);
+            if (profileViewModel != null)
+            {
+                _context.Profile.Remove(profileViewModel);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool ProfileViewModelExists(int id)
+        {
+            return _context.Profile.Any(e => e.Id == id);
         }
     }
 }

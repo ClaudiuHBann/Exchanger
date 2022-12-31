@@ -1,4 +1,4 @@
-﻿namespace Exchanger.Models.Profile
+﻿namespace Exchanger.Models
 {
     public class Account
     {

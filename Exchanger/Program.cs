@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
+using Exchanger.Controllers;
 
 namespace Exchanger
 {
@@ -16,11 +17,12 @@ namespace Exchanger
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDistributedMemoryCache();
-
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
+
+            Seeder.Initialize(builder.Services.BuildServiceProvider());
 
             var app = builder.Build();
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using Exchanger.Models.Profile;
+using Exchanger.Models;
 
 namespace Exchanger.Data
 {
@@ -8,7 +8,14 @@ namespace Exchanger.Data
     {
         public ExchangerContext(DbContextOptions<ExchangerContext> options) : base(options) { }
 
-        public DbSet<Account> Accounts { get; set; } = default!;
-        public DbSet<Profile> Profiles { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Account>().ToTable("Account");
+            modelBuilder.Entity<Profile>().ToTable("Profile");
+        }
+
+        public DbSet<Account> Account { get; set; } = default!;
+        public DbSet<Profile> Profile { get; set; }
     }
 }

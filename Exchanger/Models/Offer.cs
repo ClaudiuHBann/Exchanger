@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Exchanger.Models.Offer
+namespace Exchanger.Models
 {
-    public class OfferViewModel
+    public class Offer
     {
         public int Id { get; set; }
         [ForeignKey("Profile")]
         public int IdProfile { get; set; }
-        public List<Item> ItemsToGive { get; set; }
-        public List<Item>? ItemsToReceive { get; set; } = null;
+        public string Title { get; set; }
         public string? Description { get; set; } = null;
+        public List<string> Images { get; set; }
     }
 }

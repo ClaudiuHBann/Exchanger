@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
-using Exchanger.Models.Profile;
+using Exchanger.Models;
 
 namespace Exchanger.Controllers
 {
@@ -38,7 +38,7 @@ namespace Exchanger.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _context.Accounts.AnyAsync(e => e.Email == account.Email && e.Password == account.Password))
+                if (await _context.Account.AnyAsync(e => e.Email == account.Email && e.Password == account.Password))
                 {
                     HttpContext.Session.SetInt32("Account.Active", 1);
                     HttpContext.Session.SetString("Account.Email", account.Email);
@@ -59,12 +59,12 @@ namespace Exchanger.Controllers
         // GET: Account/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Accounts == null)
+            if (id == null || _context.Account == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Accounts
+            var account = await _context.Account
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
@@ -96,15 +96,15 @@ namespace Exchanger.Controllers
             return View(account);
         }
 
-        // GET: Account/Edit/5
+        /*// GET: Account/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Accounts == null)
+            if (id == null || _context.Account == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Accounts.FindAsync(id);
+            var account = await _context.Account.FindAsync(id);
             if (account == null)
             {
                 return NotFound();
@@ -150,12 +150,12 @@ namespace Exchanger.Controllers
         // GET: Account/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Accounts == null)
+            if (id == null || _context.Account == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Accounts
+            var account = await _context.Account
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
@@ -170,14 +170,14 @@ namespace Exchanger.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Accounts == null)
+            if (_context.Account == null)
             {
-                return Problem("Entity set 'ExchangerContext.Accounts'  is null.");
+                return Problem("Entity set 'ExchangerContext.Account'  is null.");
             }
-            var account = await _context.Accounts.FindAsync(id);
+            var account = await _context.Account.FindAsync(id);
             if (account != null)
             {
-                _context.Accounts.Remove(account);
+                _context.Account.Remove(account);
             }
 
             await _context.SaveChangesAsync();
@@ -186,7 +186,7 @@ namespace Exchanger.Controllers
 
         private bool AccountExists(int id)
         {
-            return _context.Accounts.Any(e => e.Id == id);
-        }
+            return _context.Account.Any(e => e.Id == id);
+        }*/
     }
 }
