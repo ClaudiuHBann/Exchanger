@@ -8,7 +8,7 @@ namespace Exchanger.Data
     {
         public ExchangerContext(DbContextOptions<ExchangerContext> options) : base(options) { }
 
-        /*public DbSet<Account> Account { get; set; }*/
-        /*public DbSet<Profile> Profile { get; set; }*/
+        public DbSet<Account> Account { get; set; }
+        public DbSet<Profile> Profile { get; set; }
     }
 }
