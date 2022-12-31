@@ -21,7 +21,7 @@ namespace Exchanger.Controllers
             var accountActive = HttpContext.Session.GetInt32("Account.Active");
             if (accountActive != null && accountActive == 1)
             {
-                return View("Details");
+                return await Details(HttpContext.Session.GetInt32("Account.Id"));
             }
             else
             {
@@ -41,6 +41,7 @@ namespace Exchanger.Controllers
                 if (await _context.Account.AnyAsync(e => e.Email == account.Email && e.Password == account.Password))
                 {
                     HttpContext.Session.SetInt32("Account.Active", 1);
+                    HttpContext.Session.SetInt32("Account.Id", _context.Account.Where(a => a.Email == account.Email && a.Password == account.Password).First().Id);
                     HttpContext.Session.SetString("Account.Email", account.Email);
                     HttpContext.Session.SetString("Account.Password", account.Password);
                 }
@@ -71,7 +72,20 @@ namespace Exchanger.Controllers
                 return NotFound();
             }
 
-            return View(account);
+            await PopulateProfile(account);
+            return View("Details");
+        }
+
+        public async Task PopulateProfile(Account account)
+        {
+            var profile = await _context.Profile.FirstOrDefaultAsync(p => p.IdAccount == account.Id);
+            if (profile == null)
+            {
+                return;
+            }
+
+            ViewData["Profile"] = profile;
+            ViewData["Offers"] = await _context.Offer.Where(o => o.IdProfile == profile.Id).ToListAsync();
         }
 
         // GET: Account/SignUp
@@ -156,7 +170,7 @@ namespace Exchanger.Controllers
             }
 
             var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (account == null)
             {
                 return NotFound();

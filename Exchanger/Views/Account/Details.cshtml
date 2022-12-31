@@ -1,4 +1,4 @@
-﻿@model           Account
+﻿@model Account
 
 @{
   ViewData["Title"] = "Profile";
@@ -39,15 +39,13 @@
                 <div class="offers-li-items">@offers[i].Title</div>
                 <div class="offers-li-description">@offers[i].Description</div>
                 <div class="offers-li-images-container">
-                @{
-                    /*
-                     
-                    @for (int j = 0; j < offers[i]?.Images.Count; j++)
-                    {
-                        <img class="offers-li-images-item" src="@offers[i]?.Images[j]" />     
+                    @{
+                        var images = offers[i]?.Images.Split('|');
+                        @for (int j = 0; j < images?.Length; j++)
+                        {
+                            <img class="offers-li-images-item" src="@images[j]" />     
+                        }
                     }
-                     */
-                }
                 </div>
             </li>
         }

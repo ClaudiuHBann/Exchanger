@@ -29,19 +29,30 @@ namespace Exchanger.Controllers
             context.Account.Add(acc);
             context.SaveChanges();
 
+            var idAcc = context.Account.Where(e => e.Email == acc.Email && e.Password == acc.Password).First().Id;
             Profile prof = new()
             {
-                Avatar = "userUnknown.png",
+                Avatar = "image/userUnknown.png",
                 City = "Craiova",
                 Country = "Romania",
                 Description = "...",
                 Email = "a@a.a",
-                IdAccount = context.Account.Where(e => e.Email == acc.Email && e.Password == acc.Password).First().Id,
+                IdAccount = idAcc,
                 Name = "User#6996",
                 Phone = "0770337470",
                 Rating = 5f
             };
             context.Profile.Add(prof);
+            context.SaveChanges();
+
+            Offer offer = new()
+            {
+                IdProfile = context.Profile.Where(e => e.IdAccount == idAcc).First().Id,
+                Title = "Vand penis",
+                Description = "Pe pasarica",
+                Images = "https://i0.wp.com/www.orgasmbox.co.uk/wp-content/uploads/2021/07/Dildo.jpg|https://mindcraftstories.ro/applications/webp-express/webp-images/doc-root/images/2020/07/Mindcraftstories_P%C4%83s%C4%83ri-urbane-cine-sunt-%C8%99i-unde-le-po%C8%9Bi-vedea_Vrabia-de-cas%C4%83_Andrei-Chi%C8%99.jpg.webp"
+            };
+            context.Offer.Add(offer);
             context.SaveChanges();
         }
     }
