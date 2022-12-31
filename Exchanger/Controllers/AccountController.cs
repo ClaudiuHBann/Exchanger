@@ -15,7 +15,7 @@ namespace Exchanger.Controllers
             _context = context;
         }
 
-        // GET: Account
+        /*// GET: Account
         public async Task<IActionResult> Index()
         {
             var accountActive = HttpContext.Session.GetInt32("Account.Active");
@@ -94,7 +94,7 @@ namespace Exchanger.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
-        }
+        }*/
 
         /*// GET: Account/Edit/5
         public async Task<IActionResult> Edit(int? id)

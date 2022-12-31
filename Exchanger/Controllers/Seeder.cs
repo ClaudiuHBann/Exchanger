@@ -11,14 +11,14 @@ namespace Exchanger.Controllers
         {
             using var context = new ExchangerContext(serviceProvider.GetRequiredService<DbContextOptions<ExchangerContext>>());
 
-            foreach (var account in context.Account)
+            /*foreach (var account in context.Account)
             {
                 context.Account.Remove(account);
-            }
-            foreach (var profile in context.Profile)
+            }*/
+            /*foreach (var profile in context.Profile)
             {
                 context.Profile.Remove(profile);
-            }
+            }*/
             context.SaveChanges();
 
             Account acc = new()
@@ -26,10 +26,10 @@ namespace Exchanger.Controllers
                 Email = "a@a.a",
                 Password = "a@a.a"
             };
-            context.Account.Add(acc);
+            /*context.Account.Add(acc);*/
             context.SaveChanges();
 
-            Profile prof = new()
+            /*Profile prof = new()
             {
                 Avatar = "userUnknown.png",
                 City = "Craiova",
@@ -40,8 +40,8 @@ namespace Exchanger.Controllers
                 Name = "User#6996",
                 Phone = "0770337470",
                 Rating = 5f
-            };
-            context.Profile.Add(prof);
+            };*/
+            /*context.Profile.Add(prof);*/
             context.SaveChanges();
         }
     }

@@ -8,14 +8,7 @@ namespace Exchanger.Data
     {
         public ExchangerContext(DbContextOptions<ExchangerContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Account>().ToTable("Account");
-            modelBuilder.Entity<Profile>().ToTable("Profile");
-        }
-
-        public DbSet<Account> Account { get; set; } = default!;
-        public DbSet<Profile> Profile { get; set; }
+        /*public DbSet<Account> Account { get; set; }*/
+        /*public DbSet<Profile> Profile { get; set; }*/
     }
 }
