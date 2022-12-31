@@ -15,5 +15,7 @@ namespace Exchanger.Data
         }
 
         public DbSet<Exchanger.Models.Profile.Account> Account { get; set; } = default!;
+
+        public DbSet<Exchanger.Models.Profile.ProfileViewModel> ProfileViewModel { get; set; }
     }
 }

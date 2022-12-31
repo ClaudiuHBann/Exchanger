@@ -1,8 +1,12 @@
-﻿namespace Exchanger.Models.Profile
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Exchanger.Models.Profile
 {
     public class ProfileViewModel
     {
         public int Id { get; set; }
+        [ForeignKey("Account")]
+        public int IdAccount { get; set; }
         public string? Avatar { get; set; } = null;
         public string? Name { get; set; } = null;
         public string? Description { get; set; } = null;
