@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+
 using Exchanger.Data;
+
 namespace Exchanger
 {
     public class Program
@@ -13,6 +14,13 @@ namespace Exchanger
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+            });
 
             var app = builder.Build();
 
@@ -34,6 +42,8 @@ namespace Exchanger
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}"
                 );
+
+            app.UseSession();
 
             app.Run();
         }

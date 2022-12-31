@@ -23,7 +23,7 @@ namespace Exchanger.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Exchanger.Models.Profile.Account", b =>
+            modelBuilder.Entity("Exchanger.Models.Profile.Accounts", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ namespace Exchanger.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Account");
+                    b.ToTable("Accounts");
                 });
 #pragma warning restore 612, 618
         }

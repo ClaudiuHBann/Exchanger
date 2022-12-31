@@ -36,8 +36,11 @@
                         </li>
                         <li class="nav-item text-align-right">
                             <div class="d-sm-inline-flex">
-                                <i class="nav-bar-item-profile-image fa fa-user" aria-hidden="true"></i>
-                                <a class="nav-link theme-color-back-text" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
+                                <a class="nav-link theme-color-back-text d-sm-inline-flex" asp-area="" asp-controller="Account" asp-action="Index">
+                                    <i class="nav-bar-item-profile-image fa fa-user" aria-hidden="true"></i>
+                                    <div style="margin-left: 5px; margin-right: 5px;">Profile</div>
+                                </a>
+                                <a class="nav-bar-item-profile-image fa fa-sign-out" style="color: #999999;" aria-hidden="true" asp-area="" asp-controller="Account" asp-action="LogOut"></a>
                             </div>
                         </li>
                     </ul>

@@ -2,7 +2,7 @@
 
 namespace Exchanger.Models.Profile
 {
-    public class ProfileViewModel
+    public class Profile
     {
         public int Id { get; set; }
         [ForeignKey("Account")]

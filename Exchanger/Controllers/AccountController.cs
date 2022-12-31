@@ -1,39 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using Exchanger.Data;
 using Exchanger.Models.Profile;
 
 namespace Exchanger.Controllers
 {
-    public class AccountsController : Controller
+    public class AccountController : Controller
     {
         private readonly ExchangerContext _context;
 
-        public AccountsController(ExchangerContext context)
+        public AccountController(ExchangerContext context)
         {
             _context = context;
         }
 
-        // GET: Accounts
+        // GET: Account
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Account.ToListAsync());
+            var accountActive = HttpContext.Session.GetInt32("Account.Active");
+            if (accountActive != null && accountActive == 1)
+            {
+                return View("Details");
+            }
+            else
+            {
+                return View("Index");
+            }
         }
 
-        // GET: Accounts/Details/5
+        // POST: Account/LogIn
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogIn([Bind("Email,Password")] Account account)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _context.Accounts.AnyAsync(e => e.Email == account.Email && e.Password == account.Password))
+                {
+                    HttpContext.Session.SetInt32("Account.Active", 1);
+                    HttpContext.Session.SetString("Account.Email", account.Email);
+                    HttpContext.Session.SetString("Account.Password", account.Password);
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Account/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Account == null)
+            if (id == null || _context.Accounts == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Account
+            var account = await _context.Accounts
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
@@ -43,18 +74,18 @@ namespace Exchanger.Controllers
             return View(account);
         }
 
-        // GET: Accounts/Create
-        public IActionResult Create()
+        // GET: Account/SignUp
+        public IActionResult SignUp()
         {
-            return View();
+            return View("Create");
         }
 
-        // POST: Accounts/Create
+        // POST: Account/SignUp
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,Password")] Account account)
+        public async Task<IActionResult> SignUp([Bind("Email,Password")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -65,15 +96,15 @@ namespace Exchanger.Controllers
             return View(account);
         }
 
-        // GET: Accounts/Edit/5
+        // GET: Account/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Account == null)
+            if (id == null || _context.Accounts == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Account.FindAsync(id);
+            var account = await _context.Accounts.FindAsync(id);
             if (account == null)
             {
                 return NotFound();
@@ -81,7 +112,7 @@ namespace Exchanger.Controllers
             return View(account);
         }
 
-        // POST: Accounts/Edit/5
+        // POST: Account/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,15 +147,15 @@ namespace Exchanger.Controllers
             return View(account);
         }
 
-        // GET: Accounts/Delete/5
+        // GET: Account/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Account == null)
+            if (id == null || _context.Accounts == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Account
+            var account = await _context.Accounts
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
@@ -134,28 +165,28 @@ namespace Exchanger.Controllers
             return View(account);
         }
 
-        // POST: Accounts/Delete/5
+        // POST: Account/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Account == null)
+            if (_context.Accounts == null)
             {
-                return Problem("Entity set 'ExchangerContext.Account'  is null.");
+                return Problem("Entity set 'ExchangerContext.Accounts'  is null.");
             }
-            var account = await _context.Account.FindAsync(id);
+            var account = await _context.Accounts.FindAsync(id);
             if (account != null)
             {
-                _context.Account.Remove(account);
+                _context.Accounts.Remove(account);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AccountExists(int id)
         {
-          return _context.Account.Any(e => e.Id == id);
+            return _context.Accounts.Any(e => e.Id == id);
         }
     }
 }

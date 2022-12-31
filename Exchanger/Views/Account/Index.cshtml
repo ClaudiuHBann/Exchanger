@@ -1,8 +1,10 @@
-﻿@{
-  ViewData["Title"] = "Log In";
+﻿@model Exchanger.Models.Profile.Account
+
+@{
+    ViewData["Title"] = "Log In";
 }
 
-<section class="vh-100">
+<form asp-action="LogIn" class="vh-100">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -12,13 +14,15 @@
             <h3 class="mb-5 theme-color-back-text">Log In</h3>
 
             <div class="form-outline mb-4">
-              <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
-              <label class="form-label" style="color: #999999;" for="typeEmailX-2">Email</label>
+              <input asp-for="Email" type="email" id="typeEmailX-2" class="form-control form-control-lg" />
+              <label asp-for="Email" class="form-label" style="color: #999999;">Email</label>
+              <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="form-outline mb-4">
-              <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
-              <label class="form-label" style="color: #999999;" for="typePasswordX-2">Password</label>
+              <input asp-for="Password" type="password" id="typePasswordX-2" class="form-control form-control-lg" />
+              <label asp-for="Password" class="form-label" style="color: #999999;">Password</label>
+              <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-check d-flex justify-content-start mb-4">
@@ -44,4 +48,4 @@
       </div>
     </div>
   </div>
-</section>
+</form>

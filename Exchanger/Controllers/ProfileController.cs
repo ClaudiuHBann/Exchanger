@@ -1,23 +1,23 @@
-﻿using Exchanger.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+
 using Exchanger.Models.Offer;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Exchanger.Models.Profile;
 
-namespace Exchanger.Controllers.Home
+namespace Exchanger.Controllers
 {
-    public class HomeController : Controller
+    public class ProfileController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
-            Test();
-            return View();
+            if (false)
+            {
+                Test();
+                return View();
+            }
+            else
+            {
+                return Redirect("~/Account/LogIn");
+            }
         }
 
         void Test()
@@ -74,17 +74,20 @@ namespace Exchanger.Controllers.Home
             }
 
             ViewData["Offers"] = offers;
-        }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            Profile profile = new()
+            {
+                Avatar = "image/userUnknown.png",
+                City = "Craiova",
+                Country = "Romania",
+                Description = "Un bulangiu si juma :P... ca na csf naicsf",
+                Email = "dennis69@gmail.com",
+                Name = "Jnitzi",
+                Phone = "0770337470",
+                Rating = 3.4f
+            };
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewData["Profile"] = profile;
         }
     }
 }

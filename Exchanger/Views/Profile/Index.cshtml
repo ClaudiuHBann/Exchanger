@@ -1,53 +1,83 @@
-﻿@{
-  ViewData["Title"] = "Profile";
+﻿@model IEnumerable<Exchanger.Models.Profile.Profile>
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div class="profile-split">
-    <div class="profile-split-left">
-    @{
-      var profile = (Exchanger.Models.Profile.ProfileViewModel?)ViewData["Profile"];
+<h1>Index</h1>
 
-      <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
-      <div class="profile-split-left-name">@profile?.Name</div>
-      <div class="profile-split-left-description">@profile?.Description</div>
-
-      <div class="margin-y font-size-bigger">Contact:</div>
-      <div class="profile-split-left-phone">Phone: @profile?.Phone</div>
-      <div class="profile-split-left-email">Email: @profile?.Email</div>
-      
-      <div class="margin-y font-size-bigger">Location:</div>
-      <div class="profile-split-left-country">Country: @profile?.Country</div>
-      <div class="profile-split-left-city">City: @profile?.City</div>
-      
-      <div class="margin-y font-size-bigger">Rating:</div>
-      <div class="profile-split-left-rating">⭐⭐⭐⭐⭐</div>
-    }
-    </div>
-
-    <div class="profile-split-right">
-        <h2 class="text-center theme-color-front-text">Your Offers</h2>
-
-        <ul class="offers">
-      @{
-        var offers = (List<Exchanger.Models.Offer.OfferViewModel>?)ViewData["Offers"];
-        for (int i = 0; i < offers?.Count; i++)
-        {
-            <li>
-                <img class="offers-li-profile-image" src="image/userUnknown.png"/>
-                <div class="offers-li-items">@offers[i].ItemsToGive.Count items to offer</div>
-                <div class="offers-li-description">Anonymous wants to exchange @offers[i].ItemsToGive.Count items for @offers[i].ItemsToReceive?.Count items.</div>
-                <div class="offers-li-images-container">
-                @for (int j = 0; j < offers[i]?.ItemsToGive.Count; j++)
-                {
-                    @for (int k = 0; k < offers[i]?.ItemsToGive[j].Images.Count; k++)
-                    {
-                        <img class="offers-li-images-item" src="@offers[i]?.ItemsToGive[j].Images[k]" />     
-                    }
-                }
-                </div>
-            </li>
-        }
-      }
-        </ul>
-    </div>
-</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAccount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Avatar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Avatar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

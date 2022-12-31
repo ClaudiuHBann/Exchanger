@@ -22,18 +22,18 @@ namespace Exchanger.Controllers
         // GET: ProfileViewModels
         public async Task<IActionResult> Index()
         {
-              return View(await _context.ProfileViewModel.ToListAsync());
+              return View(await _context.Profiles.ToListAsync());
         }
 
         // GET: ProfileViewModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.ProfileViewModel == null)
+            if (id == null || _context.Profiles == null)
             {
                 return NotFound();
             }
 
-            var profileViewModel = await _context.ProfileViewModel
+            var profileViewModel = await _context.Profiles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (profileViewModel == null)
             {
@@ -54,7 +54,7 @@ namespace Exchanger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdAccount,Avatar,Name,Description,Phone,Email,Country,City,Rating")] ProfileViewModel profileViewModel)
+        public async Task<IActionResult> Create([Bind("Id,IdAccount,Avatar,Name,Description,Phone,Email,Country,City,Rating")] Profile profileViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -68,12 +68,12 @@ namespace Exchanger.Controllers
         // GET: ProfileViewModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.ProfileViewModel == null)
+            if (id == null || _context.Profiles == null)
             {
                 return NotFound();
             }
 
-            var profileViewModel = await _context.ProfileViewModel.FindAsync(id);
+            var profileViewModel = await _context.Profiles.FindAsync(id);
             if (profileViewModel == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace Exchanger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdAccount,Avatar,Name,Description,Phone,Email,Country,City,Rating")] ProfileViewModel profileViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IdAccount,Avatar,Name,Description,Phone,Email,Country,City,Rating")] Profile profileViewModel)
         {
             if (id != profileViewModel.Id)
             {
@@ -119,12 +119,12 @@ namespace Exchanger.Controllers
         // GET: ProfileViewModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.ProfileViewModel == null)
+            if (id == null || _context.Profiles == null)
             {
                 return NotFound();
             }
 
-            var profileViewModel = await _context.ProfileViewModel
+            var profileViewModel = await _context.Profiles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (profileViewModel == null)
             {
@@ -139,14 +139,14 @@ namespace Exchanger.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.ProfileViewModel == null)
+            if (_context.Profiles == null)
             {
-                return Problem("Entity set 'ExchangerContext.ProfileViewModel'  is null.");
+                return Problem("Entity set 'ExchangerContext.Profile'  is null.");
             }
-            var profileViewModel = await _context.ProfileViewModel.FindAsync(id);
+            var profileViewModel = await _context.Profiles.FindAsync(id);
             if (profileViewModel != null)
             {
-                _context.ProfileViewModel.Remove(profileViewModel);
+                _context.Profiles.Remove(profileViewModel);
             }
             
             await _context.SaveChangesAsync();
@@ -155,7 +155,7 @@ namespace Exchanger.Controllers
 
         private bool ProfileViewModelExists(int id)
         {
-          return _context.ProfileViewModel.Any(e => e.Id == id);
+          return _context.Profiles.Any(e => e.Id == id);
         }
     }
 }

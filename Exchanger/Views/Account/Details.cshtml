@@ -1,0 +1,55 @@
+﻿@model Exchanger.Models.Profile.Account
+
+@{
+  ViewData["Title"] = "Profile";
+}
+
+<div class="profile-split">
+    <div class="profile-split-left">
+    @{
+      var profile = (Exchanger.Models.Profile.Profile?)ViewData["Profile"];
+
+      <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
+      <div class="profile-split-left-name">@profile?.Name</div>
+      <div class="profile-split-left-description">@profile?.Description</div>
+
+      <div class="margin-y font-size-bigger">Contact:</div>
+      <div class="profile-split-left-phone">Phone: @profile?.Phone</div>
+      <div class="profile-split-left-email">Email: @profile?.Email</div>
+      
+      <div class="margin-y font-size-bigger">Location:</div>
+      <div class="profile-split-left-country">Country: @profile?.Country</div>
+      <div class="profile-split-left-city">City: @profile?.City</div>
+      
+      <div class="margin-y font-size-bigger">Rating:</div>
+      <div class="profile-split-left-rating">⭐⭐⭐⭐⭐</div>
+    }
+    </div>
+
+    <div class="profile-split-right">
+        <h2 class="text-center theme-color-front-text">Your Offers</h2>
+
+        <ul class="offers">
+      @{
+        var offers = (List<Exchanger.Models.Offer.OfferViewModel>?)ViewData["Offers"];
+        for (int i = 0; i < offers?.Count; i++)
+        {
+            <li>
+                <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+                <div class="offers-li-items">@offers[i].ItemsToGive.Count items to offer</div>
+                <div class="offers-li-description">Anonymous wants to exchange @offers[i].ItemsToGive.Count items for @offers[i].ItemsToReceive?.Count items.</div>
+                <div class="offers-li-images-container">
+                @for (int j = 0; j < offers[i]?.ItemsToGive.Count; j++)
+                {
+                    @for (int k = 0; k < offers[i]?.ItemsToGive[j].Images.Count; k++)
+                    {
+                        <img class="offers-li-images-item" src="@offers[i]?.ItemsToGive[j].Images[k]" />     
+                    }
+                }
+                </div>
+            </li>
+        }
+      }
+        </ul>
+    </div>
+</div>
