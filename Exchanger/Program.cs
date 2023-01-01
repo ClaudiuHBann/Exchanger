@@ -60,7 +60,12 @@ namespace Exchanger
 
 /*
     TODO:
-         - make offer's title wider
-         - make the profile's left side panel stop when info finishes
          - seed with random photos (people & items)
+         - edit profile
+         - add offers
+         - edit offers
+         - remove offers
+         - make an offer to an offer
+         - paging on the global offers
+         - filters for the global offers
 */
