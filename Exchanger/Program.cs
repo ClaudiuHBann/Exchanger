@@ -9,6 +9,12 @@ namespace Exchanger
     {
         public static void Main(string[] args)
         {
+            InitializeAsync(args);
+            while (true) Thread.Sleep(int.MaxValue);
+        }
+
+        static async void InitializeAsync(string[] args)
+        {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<ExchangerContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ExchangerContext") ?? throw new InvalidOperationException("Connection string 'ExchangerContext' not found.")));
@@ -22,7 +28,7 @@ namespace Exchanger
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
 
-            Seeder.Initialize(builder.Services.BuildServiceProvider());
+            await Seeder.Initialize(builder.Services.BuildServiceProvider());
 
             var app = builder.Build();
 
@@ -47,7 +53,7 @@ namespace Exchanger
 
             app.UseSession();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
