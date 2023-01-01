@@ -38,8 +38,8 @@ ul {
 }
 
 .margin-y {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .nav-bar-item-profile-image {
@@ -75,7 +75,6 @@ ul.offers {
 .offers-li-items {
     color: #e1e1e1;
     margin: auto 0;
-    width: 50%;
     grid-area: 1 / 2 / 2 / 3;
 }
 

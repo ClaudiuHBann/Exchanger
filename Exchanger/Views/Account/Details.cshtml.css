@@ -10,6 +10,7 @@
     margin-top: -15px;
     margin-bottom: -15px;
     margin-left: -15px;
+    height: fit-content;
 }
 
     .profile-split-left > * {
@@ -24,7 +25,7 @@
 
 .profile-split-left-avatar {
     display: block;
-    margin: 10px auto;
+    margin: 20px auto;
     width: 100px;
     height: 100px;
 }
@@ -58,4 +59,6 @@
 
 .profile-split-left-rating {
     text-align: center;
+    font-size: x-large;
+    margin-bottom: 10px;
 }

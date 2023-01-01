@@ -52,26 +52,28 @@ namespace Exchanger.Controllers
             }
             await context.Profile.AddRangeAsync(profiles);
 
-            var offers = await GetListOfTFromURL<Offer>("https://my.api.mockaroo.com/offer.json?key=d7ccea10");
-            if (offers == null)
+            for (int k = 0; k < 3; k++)
             {
-                return;
-            }
-            await context.SaveChangesAsync();
-            var profilesUpdated = await context.Profile.ToListAsync();
-            for (var i = 0; i < profilesUpdated.Count; i++)
-            {
-                offers[i].IdProfile = profilesUpdated[i].Id;
-                string images = "";
-                for (var j = 0; j < int.Parse(offers[i].Images); j++)
+                var offers = await GetListOfTFromURL<Offer>("https://my.api.mockaroo.com/offer.json?key=d7ccea10");
+                if (offers == null)
                 {
-                    images += "image/itemUnknown.png|";
+                    return;
                 }
-                offers[i].Images = images.Remove(images.Length - 1);
+                await context.SaveChangesAsync();
+                var profilesUpdated = await context.Profile.ToListAsync();
+                for (var i = 0; i < profilesUpdated.Count; i++)
+                {
+                    offers[i].IdProfile = profilesUpdated[i].Id;
+                    string images = "";
+                    for (var j = 0; j < int.Parse(offers[i].Images); j++)
+                    {
+                        images += "image/itemUnknown.png|";
+                    }
+                    offers[i].Images = images.Remove(images.Length - 1);
+                }
+                await context.Offer.AddRangeAsync(offers);
+                await context.SaveChangesAsync();
             }
-            await context.Offer.AddRangeAsync(offers);
-
-            await context.SaveChangesAsync();
 
             // add special
             Account acc = new()
@@ -98,14 +100,16 @@ namespace Exchanger.Controllers
             await context.Profile.AddAsync(prof);
             await context.SaveChangesAsync();
 
-            Offer off = new()
+            for (int i = 0; i < 5; i++)
             {
-                IdProfile = context.Profile.Where(profile => profile.IdAccount == idAcc).First().Id,
-                Title = "Vand scula",
-                Description = "Pe bascula",
-                Images = "https://i0.wp.com/www.orgasmbox.co.uk/wp-content/uploads/2021/07/Dildo.jpg|https://media1.lajumate.ro/media/i/api_list/8/140/14090618_bascula-iveco-bremach_3.jpg"
-            };
-            await context.Offer.AddAsync(off);
+                await context.Offer.AddAsync(new()
+                {
+                    IdProfile = context.Profile.Where(profile => profile.IdAccount == idAcc).First().Id,
+                    Title = "Vand scula",
+                    Description = "Pe bascula",
+                    Images = "https://i0.wp.com/www.orgasmbox.co.uk/wp-content/uploads/2021/07/Dildo.jpg|https://media1.lajumate.ro/media/i/api_list/8/140/14090618_bascula-iveco-bremach_3.jpg"
+                });
+            }
             await context.SaveChangesAsync();
         }
 

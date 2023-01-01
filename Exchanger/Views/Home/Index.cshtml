@@ -3,3 +3,26 @@
 }
 
 <h2 class="text-center theme-color-front-text">Global Offers</h2>
+
+<ul class="offers">
+@{
+  var offers = (List<Offer>?)ViewData["Offers"];
+  for (int i = 0; i < offers?.Count; i++)
+  {
+      <li>
+          <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+          <div class="offers-li-items">@offers[i].Title</div>
+          <div class="offers-li-description">@offers[i].Description</div>
+          <div class="offers-li-images-container">
+              @{
+                  var images = offers[i]?.Images.Split('|');
+                  @for (int j = 0; j < images?.Length; j++)
+                  {
+                      <img class="offers-li-images-item" src="@images[j]" />     
+                  }
+              }
+          </div>
+      </li>
+  }
+}
+</ul>

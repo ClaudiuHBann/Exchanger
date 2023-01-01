@@ -57,3 +57,10 @@ namespace Exchanger
         }
     }
 }
+
+/*
+    TODO:
+         - make offer's title wider
+         - make the profile's left side panel stop when info finishes
+         - seed with random photos (people & items)
+*/
