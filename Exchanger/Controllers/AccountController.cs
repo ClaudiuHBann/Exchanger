@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
 using Exchanger.Models;
+
 using System.Data;
 
 namespace Exchanger.Controllers
@@ -19,6 +20,8 @@ namespace Exchanger.Controllers
         // GET: Account
         public async Task<IActionResult> Index()
         {
+            await LogIn(new Account() { Email = "a@a.a", Password = "a@a.a" });
+
             var accountActive = HttpContext.Session.GetInt32("Account.Active");
             if (accountActive != null && accountActive == 1)
             {

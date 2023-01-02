@@ -14,6 +14,11 @@ namespace Exchanger.Controllers
         {
             using var context = new ExchangerContext(serviceProvider.GetRequiredService<DbContextOptions<ExchangerContext>>());
 
+            if (context.Account.Any())
+            {
+                return;
+            }
+
             // clear all
             foreach (var account in context.Account)
             {
@@ -30,14 +35,14 @@ namespace Exchanger.Controllers
             await context.SaveChangesAsync();
 
             // add all
-            var accounts = await GetListOfTFromURL<Account>("https://my.api.mockaroo.com/users.json?key=d7ccea10");
+            var accounts = await GetListOfTFromURL<Account>("https://my.api.mockaroo.com/users.json?key=faafb590");
             if (accounts == null)
             {
                 return;
             }
             await context.Account.AddRangeAsync(accounts);
 
-            var profiles = await GetListOfTFromURL<Profile>("https://my.api.mockaroo.com/profile.json?key=d7ccea10");
+            var profiles = await GetListOfTFromURL<Profile>("https://my.api.mockaroo.com/profile.json?key=faafb590");
             if (profiles == null)
             {
                 return;
@@ -54,7 +59,7 @@ namespace Exchanger.Controllers
 
             for (int k = 0; k < 3; k++)
             {
-                var offers = await GetListOfTFromURL<Offer>("https://my.api.mockaroo.com/offer.json?key=d7ccea10");
+                var offers = await GetListOfTFromURL<Offer>("https://my.api.mockaroo.com/offer.json?key=faafb590");
                 if (offers == null)
                 {
                     return;

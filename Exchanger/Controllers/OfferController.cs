@@ -45,6 +45,12 @@ namespace Exchanger.Controllers
             return View();
         }
 
+        [Route("Offer/{id}/{idOffer}")]
+        public IActionResult Offer(int? id, int? idOffer)
+        {
+            return Redirect("~/");
+        }
+
         // POST: Offer/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

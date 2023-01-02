@@ -19,7 +19,11 @@ namespace Exchanger.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Offers"] = _context.Offer.OrderByDescending(o => o.Id).ToList();
+            ViewData["Offers.All"] = _context.Offer.OrderByDescending(o => o.Id).ToList();
+
+            var idProfile = HttpContext.Session.GetInt32("Profile.Id");
+            ViewData["Offers.Mine"] = _context.Offer.Where(o => o.IdProfile == idProfile).OrderByDescending(o => o.Id).ToList();
+            
             return View();
         }
 
