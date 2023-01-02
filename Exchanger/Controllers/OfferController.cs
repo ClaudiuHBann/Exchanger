@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using Exchanger.Data;
 using Exchanger.Models;
 
@@ -19,7 +15,7 @@ namespace Exchanger.Controllers
             _context = context;
         }
 
-        // GET: Offer
+        /*// GET: Offer
         public async Task<IActionResult> Index()
         {
               return View(await _context.Offer.ToListAsync());
@@ -41,7 +37,7 @@ namespace Exchanger.Controllers
             }
 
             return View(offer);
-        }
+        }*/
 
         // GET: Offer/Create
         public IActionResult Create()
@@ -54,13 +50,14 @@ namespace Exchanger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdProfile,Title,Description,Images")] Offer offer)
+        public async Task<IActionResult> Create([Bind("Title,Description,Images")] Offer offer)
         {
             if (ModelState.IsValid)
             {
+                offer.IdProfile = (int)HttpContext.Session.GetInt32("Profile.Id");
                 _context.Add(offer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Redirect("~/Account");
             }
             return View(offer);
         }
@@ -148,14 +145,14 @@ namespace Exchanger.Controllers
             {
                 _context.Offer.Remove(offer);
             }
-            
+
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Redirect("~/Account");
         }
 
         private bool OfferExists(int id)
         {
-          return _context.Offer.Any(e => e.Id == id);
+            return _context.Offer.Any(e => e.Id == id);
         }
     }
 }

@@ -1,37 +1,31 @@
 ﻿@model Exchanger.Models.Offer
 
 @{
-    ViewData["Title"] = "Create";
+  ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Offer</h4>
+<h1>Create Offer</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdProfile" class="control-label"></label>
-                <input asp-for="IdProfile" class="form-control" />
-                <span asp-validation-for="IdProfile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control theme-color-front-bg" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group margin-y">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control theme-color-front-bg" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Images" class="control-label"></label>
-                <input asp-for="Images" class="form-control" />
+                <label asp-for="Images" class="control-label">Images (imageURL1|imageURL2...|imageURLX)</label>
+                <input asp-for="Images" class="form-control theme-color-front-bg" />
                 <span asp-validation-for="Images" class="text-danger"></span>
             </div>
+            <hr />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -39,10 +33,8 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
+  }

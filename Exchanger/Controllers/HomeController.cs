@@ -19,7 +19,7 @@ namespace Exchanger.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Offers"] = _context.Offer.ToList();
+            ViewData["Offers"] = _context.Offer.OrderByDescending(o => o.Id).ToList();
             return View();
         }
 

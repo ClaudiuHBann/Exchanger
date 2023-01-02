@@ -97,6 +97,22 @@ ul.offers {
     margin-right: 10px;
 }
 
+.offers-add {
+    font-size: xx-large;
+    text-align: center;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.offers-delete {
+    grid-area: 1 / 2 / 2 / 3;
+    font-size: larger;
+    color: darkred;
+    margin: 10px;
+    justify-self: end;
+    width: fit-content;
+}
+
 /* OFFERS */
 
 /* THEME */

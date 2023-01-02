@@ -34,6 +34,7 @@
     <div class="profile-split-right">
         <h2 class="text-center theme-color-front-text">Your Offers</h2>
 
+        <a class="fa fa-plus offers-add" href="~/Offer/Create" aria-hidden="true"></a>
         <ul class="offers">
         @{
           var offers = (List<Offer>?)ViewData["Offers"];
@@ -42,6 +43,7 @@
               <li>
                   <img class="offers-li-profile-image" src="image/userUnknown.png"/>
                   <div class="offers-li-items">@offers[i].Title</div>
+                  <a class="fa fa-trash offers-delete" asp-controller="Offer" asp-action="Delete" asp-route-id="@offers[i].Id" aria-hidden="true"></a>
                   <div class="offers-li-description">@offers[i].Description</div>
                   <div class="offers-li-images-container">
                       @{

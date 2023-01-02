@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
 using Exchanger.Models;
+using System.Data;
 
 namespace Exchanger.Controllers
 {
@@ -41,9 +42,12 @@ namespace Exchanger.Controllers
                 if (await _context.Account.AnyAsync(e => e.Email == account.Email && e.Password == account.Password))
                 {
                     HttpContext.Session.SetInt32("Account.Active", 1);
-                    HttpContext.Session.SetInt32("Account.Id", _context.Account.Where(a => a.Email == account.Email && a.Password == account.Password).First().Id);
+                    var idAcc = _context.Account.Where(a => a.Email == account.Email && a.Password == account.Password).First().Id;
+                    HttpContext.Session.SetInt32("Account.Id", idAcc);
                     HttpContext.Session.SetString("Account.Email", account.Email);
                     HttpContext.Session.SetString("Account.Password", account.Password);
+
+                    HttpContext.Session.SetInt32("Profile.Id", _context.Profile.Where(p => p.IdAccount == idAcc).First().Id);
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -85,7 +89,7 @@ namespace Exchanger.Controllers
             }
 
             ViewData["Profile"] = profile;
-            ViewData["Offers"] = await _context.Offer.Where(o => o.IdProfile == profile.Id).ToListAsync();
+            ViewData["Offers"] = await _context.Offer.Where(o => o.IdProfile == profile.Id).OrderByDescending(o => o.Id).ToListAsync();
         }
 
         // GET: Account/SignUp

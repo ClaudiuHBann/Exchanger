@@ -62,9 +62,7 @@ namespace Exchanger
     TODO:
          - seed with random photos (people & items)
          - edit profile
-         - add offers
          - edit offers
-         - remove offers
          - make an offer to an offer
          - paging on the global offers
          - filters for the global offers
