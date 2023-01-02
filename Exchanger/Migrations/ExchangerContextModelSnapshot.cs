@@ -110,6 +110,19 @@ namespace Exchanger.Migrations
 
                     b.ToTable("Profile");
                 });
+
+            modelBuilder.Entity("Exchanger.Models.OfferToOffer", b =>
+            {
+                b.Property<int>("IdOffer")
+                    .HasColumnType("int");
+
+                b.Property<int>("IdOfferOffer")
+                    .HasColumnType("int");
+
+                b.HasKey("Id");
+
+                b.ToTable("OfferToOffer");
+            });
 #pragma warning restore 612, 618
         }
     }
