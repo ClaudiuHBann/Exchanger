@@ -46,9 +46,29 @@ namespace Exchanger.Controllers
         }
 
         [Route("Offer/{id}/{idOffer}")]
-        public IActionResult Offer(int? id, int? idOffer)
+        public async Task<IActionResult> Offer(int? id, int? idOffer)
         {
+            if (id != null && idOffer != null)
+            {
+                await _context.OfferToOffer.AddAsync(new OfferToOffer()
+                {
+                    IdOffer = (int)id,
+                    IdOfferOffer = (int)idOffer
+                });
+                await _context.SaveChangesAsync();
+            }
+
             return Redirect("~/");
+        }
+
+        public IActionResult YourOther()
+        {
+            return View("~/Views/OfferOffer/YourOther.cshtml");
+        }
+
+        public IActionResult OtherYour()
+        {
+            return View("~/Views/OfferOffer/OtherYour.cshtml");
         }
 
         // POST: Offer/Create
