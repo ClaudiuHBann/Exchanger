@@ -45,7 +45,7 @@ namespace Exchanger.Controllers
             return View();
         }
 
-        [Route("Offer/{id}/{idOffer}")]
+        [Route("Offer/{id:int}/{idOffer:int}")]
         public async Task<IActionResult> Offer(int? id, int? idOffer)
         {
             if (id != null && idOffer != null)
