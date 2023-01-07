@@ -23,9 +23,11 @@
               }
             }
         </div>
-        <button class="offers-offer btn" onclick="foo(@offerAllCurrent?.Offer.Id)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Offer</button>
       </li>
-      <li><i class="fa fa-exchange" aria-hidden="true"></i></li>
+      <li>
+        <a class="fa fa-exchange offer-offer-button-exchange" asp-controller="OfferToOffer" asp-action="Exchange" asp-route-id="@offerAllCurrent?.Id" aria-hidden="true"></a>
+        <a class="fa fa-trash offers-delete" asp-controller="OfferToOffer" asp-action="Delete" asp-route-id="@offerAllCurrent?.Id" aria-hidden="true"></a>
+      </li>
       <li>
         <img class="offers-li-profile-image" src="image/userUnknown.png"/>
         <div class="offers-li-items">@offerAllCurrent?.OfferOffer.Title</div>
@@ -39,7 +41,6 @@
               }
             }
         </div>
-        <button class="offers-offer btn" onclick="foo(@offerAllCurrent?.OfferOffer.Id)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Offer</button>
       </li>
   }
 }

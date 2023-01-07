@@ -19,6 +19,7 @@ namespace Exchanger.Models
                     {
                         offersYourOther.Add(new()
                         {
+                            Id = offerToOffer.Id,
                             Offer = offerOut,
                             OfferOffer = offer
                         });
@@ -44,6 +45,7 @@ namespace Exchanger.Models
                     {
                         offersOtherYour.Add(new()
                         {
+                            Id = offerToOffer.Id,
                             Offer = offer,
                             OfferOffer = offerOut
                         });

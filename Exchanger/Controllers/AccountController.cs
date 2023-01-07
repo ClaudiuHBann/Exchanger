@@ -18,6 +18,8 @@ namespace Exchanger.Controllers
         }
 
         // GET: Account
+        [HttpGet]
+        [Route("Account/LogIn")]
         public async Task<IActionResult> Index()
         {
             await LogIn(new Account() { Email = "a@a.a", Password = "a@a.a" });
@@ -53,7 +55,7 @@ namespace Exchanger.Controllers
                     HttpContext.Session.SetInt32("Profile.Id", _context.Profile.Where(p => p.IdAccount == idAcc).First().Id);
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             return View(account);
         }

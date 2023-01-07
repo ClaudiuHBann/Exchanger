@@ -125,10 +125,14 @@ ul.offers {
     border-radius: 10px;
 }
 
+.offer-offer-button-exchange {
+    font-size: larger;
+    color: #A32CC4;
+    margin: 10px;
+}
+
 /* OFFERS */
-
 /* THEME */
-
 .nav-link:focus, .nav-link:hover,
 .navbar-brand:focus, .navbar-brand:hover {
     color: #e1e1e1;
