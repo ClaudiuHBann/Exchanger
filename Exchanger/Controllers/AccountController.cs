@@ -112,10 +112,28 @@ namespace Exchanger.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(account);
+                _context.Account.Add(account);
                 await _context.SaveChangesAsync();
+
+                var idAcc = _context.Account.Where(acc => account.Email == acc.Email && account.Password == acc.Password).First().Id;
+                Profile profile = new()
+                {
+                    Avatar = "image/userUnknown.png",
+                    City = "Unknown",
+                    Country = "Unknown",
+                    Description = "None",
+                    Email = account.Email,
+                    IdAccount = idAcc,
+                    Name = "Unknown",
+                    Phone = "Unknown",
+                    Rating = 1f
+                };
+                _context.Profile.Add(profile);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(account);
         }
 
