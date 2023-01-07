@@ -63,11 +63,17 @@ namespace Exchanger.Controllers
 
         public IActionResult YourOther()
         {
+            var profileId = (int)HttpContext.Session.GetInt32("Profile.Id");
+            ViewData["Offers.YO"] = OfferToOfferUtility.GetOfferToOfferViewsYourOther(_context, profileId);
+
             return View("~/Views/OfferOffer/YourOther.cshtml");
         }
 
         public IActionResult OtherYour()
         {
+            var profileId = (int)HttpContext.Session.GetInt32("Profile.Id");
+            ViewData["Offers.OY"] = OfferToOfferUtility.GetOfferToOfferViewsOtherYour(_context, profileId);
+
             return View("~/Views/OfferOffer/OtherYour.cshtml");
         }
 

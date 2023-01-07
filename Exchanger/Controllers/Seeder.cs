@@ -32,6 +32,10 @@ namespace Exchanger.Controllers
             {
                 context.Offer.Remove(offer);
             }
+            foreach (var offerToOffer in context.OfferToOffer)
+            {
+                context.OfferToOffer.Remove(offerToOffer);
+            }
             await context.SaveChangesAsync();
 
             // add all

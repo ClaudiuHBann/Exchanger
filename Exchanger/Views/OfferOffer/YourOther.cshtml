@@ -1,3 +1,46 @@
 ﻿@{
   ViewData["Title"] = "Your Offers For Other Offers";
 }
+
+<h2 class="text-center theme-color-front-text">Your Offers</h2>
+
+<ul class="offers">
+  @{
+    var offersAll = (List<OfferToOfferView>?)ViewData["Offers.YO"];
+    for (int i = 0; i < offersAll?.Count; i++)
+    {
+      var offerAllCurrent = offersAll[i];
+      <li>
+        <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+        <div class="offers-li-items">@offerAllCurrent?.Offer.Title</div>
+        <div class="offers-li-description">@offerAllCurrent?.Offer.Description</div>
+        <div class="offers-li-images-container">
+            @{
+              var images = offerAllCurrent?.Offer.Images.Split('|');
+              @for (int j = 0; j < images?.Length; j++)
+              {
+                <img class="offers-li-images-item" src="@images[j]" />     
+              }
+            }
+        </div>
+        <button class="offers-offer btn" onclick="foo(@offerAllCurrent?.Offer.Id)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Offer</button>
+      </li>
+      <li><i class="fa fa-exchange" aria-hidden="true"></i></li>
+      <li>
+        <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+        <div class="offers-li-items">@offerAllCurrent?.OfferOffer.Title</div>
+        <div class="offers-li-description">@offerAllCurrent?.OfferOffer.Description</div>
+        <div class="offers-li-images-container">
+            @{
+              images = offerAllCurrent?.OfferOffer.Images.Split('|');
+              @for (int j = 0; j < images?.Length; j++)
+              {
+                <img class="offers-li-images-item" src="@images[j]" />     
+              }
+            }
+        </div>
+        <button class="offers-offer btn" onclick="foo(@offerAllCurrent?.OfferOffer.Id)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Offer</button>
+      </li>
+  }
+}
+</ul>
