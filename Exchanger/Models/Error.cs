@@ -2,8 +2,12 @@ namespace Exchanger.Models
 {
     public class Error
     {
-        public string? RequestId { get; set; }
+        public string? IdRequest { get; set; }
+        public bool IdRequestShow => !string.IsNullOrEmpty(IdRequest);
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public Error(string? idRequest)
+        {
+            IdRequest = idRequest;
+        }
     }
 }

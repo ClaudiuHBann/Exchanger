@@ -11,12 +11,10 @@ namespace Exchanger.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ExchangerContext _context;
 
-        public HomeController(ILogger<HomeController> logger, ExchangerContext context)
+        public HomeController(ExchangerContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
@@ -129,7 +127,7 @@ namespace Exchanger.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new Error { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new Error(Activity.Current?.Id ?? HttpContext.TraceIdentifier));
         }
     }
 }

@@ -7,54 +7,78 @@ namespace Exchanger.Services
     {
         static public List<OfferToOfferView> GetOfferToOfferViewsYourOther(ExchangerContext context, int profileId)
         {
-            var profileOffers = context.Offer.Where(offer => offer.IdProfile == profileId);
+            List<OfferToOfferView> offerToOfferYourOther = new();
 
-            List<OfferToOfferView> offersYourOther = new();
-            foreach (var offerToOffer in context.OfferToOffer)
+            try
             {
-                var profileOffersForOffer = profileOffers.Where(offer => offer.Id == offerToOffer.IdOfferOffer);
-                if (profileOffersForOffer.Any())
+                var profileOffers = context.Offer.Where(offer => offer.IdProfile == profileId);
+                if (profileOffers == null)
                 {
-                    var offerOut = context.Offer.Where(offer => offer.Id == offerToOffer.IdOffer).First();
-                    foreach (var offer in profileOffersForOffer)
+                    return offerToOfferYourOther;
+                }
+
+                foreach (var offerToOffer in context.OfferToOffer)
+                {
+                    var profileOfferToOffers = profileOffers.Where(offer => offer.Id == offerToOffer.IdOfferOffer);
+                    if (profileOfferToOffers != null && profileOfferToOffers.Any())
                     {
-                        offersYourOther.Add(new()
+                        var offerTo = context.Offer.Where(offer => offer.Id == offerToOffer.IdOffer).First();
+                        if (offerTo == null)
                         {
-                            Id = offerToOffer.Id,
-                            Offer = offerOut,
-                            OfferOffer = offer
-                        });
+                            continue;
+                        }
+
+                        foreach (var offer in profileOfferToOffers)
+                        {
+                            offerToOfferYourOther.Add(new(offerToOffer.Id, offerTo, offer));
+                        }
                     }
                 }
             }
+            catch (Exception exception)
+            {
+                Console.Write(exception.Message);
+            }
 
-            return offersYourOther;
+            return offerToOfferYourOther;
         }
 
         static public List<OfferToOfferView> GetOfferToOfferViewsOtherYour(ExchangerContext context, int profileId)
         {
-            var profileOffers = context.Offer.Where(offer => offer.IdProfile == profileId);
+            List<OfferToOfferView> offerToOfferOtherYour = new();
 
-            List<OfferToOfferView> offersOtherYour = new();
-            foreach (var offerToOffer in context.OfferToOffer)
+            try
             {
-                var profileOffersTo = profileOffers.Where(offer => offer.Id == offerToOffer.IdOffer);
-                if (profileOffersTo.Any())
+                var profileOffers = context.Offer.Where(offer => offer.IdProfile == profileId);
+                if (profileOffers == null)
                 {
-                    var offerOut = context.Offer.Where(offer => offer.Id == offerToOffer.IdOfferOffer).First();
-                    foreach (var offer in profileOffersTo)
+                    return offerToOfferOtherYour;
+                }
+
+                foreach (var offerToOffer in context.OfferToOffer)
+                {
+                    var profileOfferToOffers = profileOffers.Where(offer => offer.Id == offerToOffer.IdOffer);
+                    if (profileOfferToOffers != null && profileOfferToOffers.Any())
                     {
-                        offersOtherYour.Add(new()
+                        var offerTo = context.Offer.Where(offer => offer.Id == offerToOffer.IdOfferOffer).First();
+                        if (offerTo == null)
                         {
-                            Id = offerToOffer.Id,
-                            Offer = offer,
-                            OfferOffer = offerOut
-                        });
+                            continue;
+                        }
+
+                        foreach (var offer in profileOfferToOffers)
+                        {
+                            offerToOfferOtherYour.Add(new(offerToOffer.Id, offer, offerTo));
+                        }
                     }
                 }
             }
+            catch (Exception exception)
+            {
+                Console.Write(exception.Message);
+            }
 
-            return offersOtherYour;
+            return offerToOfferOtherYour;
         }
     }
 }

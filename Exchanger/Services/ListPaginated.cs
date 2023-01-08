@@ -12,17 +12,35 @@ namespace Exchanger.Services
             Index = index;
             Total = (int)Math.Ceiling(count / (double)size);
 
-            AddRange(items);
+            try
+            {
+                AddRange(items);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
-        public bool HasPreviousPage => Index > 1;
-
-        public bool HasNextPage => Index < Total;
+        public bool HasPagePrevious => Index > 1;
+        public bool HasPageNext => Index < Total;
 
         public static async Task<ListPaginated<T>> CreateAsync(IQueryable<T> source, int index, int size = 50)
         {
-            var count = await source.CountAsync();
-            var items = await source.Skip((index - 1) * size).Take(size).ToListAsync();
+            List<T> items = new();
+            var count = 0;
+
+            try
+            {
+                count = await source.CountAsync();
+                items = await source.Skip((index - 1) * size).Take(size).ToListAsync();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
+
             return new ListPaginated<T>(items, count, index, size);
         }
     }

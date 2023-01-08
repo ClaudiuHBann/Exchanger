@@ -51,11 +51,7 @@ namespace Exchanger.Controllers
         {
             if (id != null && idOffer != null)
             {
-                await _context.OfferToOffer.AddAsync(new OfferToOffer()
-                {
-                    IdOffer = (int)id,
-                    IdOfferOffer = (int)idOffer
-                });
+                await _context.OfferToOffer.AddAsync(new OfferToOffer((int)id, (int)idOffer));
                 await _context.SaveChangesAsync();
             }
 

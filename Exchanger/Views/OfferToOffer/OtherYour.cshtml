@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Other Offers For Your Offers";
+  ViewData["Title"] = "Other Offers For Your Offers";
 }
 
 <h2 class="text-center theme-color-front-text">Others Offers</h2>
@@ -10,38 +10,38 @@
     for (int i = 0; i < offersAll?.Count; i++)
     {
       var offerAllCurrent = offersAll[i];
-      <li>
-        <img class="offers-li-profile-image" src="image/userUnknown.png"/>
-        <div class="offers-li-items">@offerAllCurrent?.Offer.Title</div>
-        <div class="offers-li-description">@offerAllCurrent?.Offer.Description</div>
-        <div class="offers-li-images-container">
-            @{
-              var images = offerAllCurrent?.Offer.Images.Split('|');
-              @for (int j = 0; j < images?.Length; j++)
-              {
-                <img class="offers-li-images-item" src="@images[j]" />     
-              }
+          <li>
+            <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+            <div class="offers-li-items">@offerAllCurrent?.Offer.Title</div>
+            <div class="offers-li-description">@offerAllCurrent?.Offer.Description</div>
+            <div class="offers-li-images-container">
+          @{
+            var images = offerAllCurrent?.Offer.Images.Split('|');
+            @for (int j = 0; j < images?.Length; j++)
+            {
+                        <img class="offers-li-images-item" src="@images[j]" />     
             }
-        </div>
-      </li>
-      <li>
-        <a class="fa fa-exchange offer-offer-button-exchange" asp-controller="OfferToOffer" asp-action="Exchange" asp-route-id="@offerAllCurrent?.Id" aria-hidden="true"></a>
-        <a class="fa fa-trash offers-delete" asp-controller="OfferToOffer" asp-action="Delete" asp-route-id="@offerAllCurrent?.Id" aria-hidden="true"></a>
-      </li>
-      <li>
-        <img class="offers-li-profile-image" src="image/userUnknown.png"/>
-        <div class="offers-li-items">@offerAllCurrent?.OfferOffer.Title</div>
-        <div class="offers-li-description">@offerAllCurrent?.OfferOffer.Description</div>
-        <div class="offers-li-images-container">
-            @{
-              images = offerAllCurrent?.OfferOffer.Images.Split('|');
-              @for (int j = 0; j < images?.Length; j++)
-              {
-                <img class="offers-li-images-item" src="@images[j]" />     
-              }
+          }
+            </div>
+          </li>
+          <li>
+            <a class="fa fa-exchange offer-offer-button-exchange" asp-controller="OfferToOffer" asp-action="Exchange" asp-route-id="@offerAllCurrent?.Id" aria-hidden="true"></a>
+            <a class="fa fa-trash offers-delete" asp-controller="OfferToOffer" asp-action="Delete" asp-route-id="@offerAllCurrent?.Id" aria-hidden="true"></a>
+          </li>
+          <li>
+            <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+            <div class="offers-li-items">@offerAllCurrent?.OfferToOffer.Title</div>
+            <div class="offers-li-description">@offerAllCurrent?.OfferToOffer.Description</div>
+            <div class="offers-li-images-container">
+          @{
+            images = offerAllCurrent?.OfferToOffer.Images.Split('|');
+            @for (int j = 0; j < images?.Length; j++)
+            {
+                        <img class="offers-li-images-item" src="@images[j]" />     
             }
-        </div>
-      </li>
+          }
+            </div>
+          </li>
+    }
   }
-}
 </ul>

@@ -23,8 +23,6 @@ namespace Exchanger.Controllers
         [Route("Account/LogIn")]
         public async Task<IActionResult> Index()
         {
-            await LogIn(new Account() { Email = "a@a.a", Password = "a@a.a" });
-
             var accountActive = HttpContext.Session.GetInt32("Account.Active");
             if (accountActive != null && accountActive == 1)
             {
@@ -117,18 +115,7 @@ namespace Exchanger.Controllers
                 await _context.SaveChangesAsync();
 
                 var idAcc = _context.Account.Where(acc => account.Email == acc.Email && account.Password == acc.Password).First().Id;
-                Profile profile = new()
-                {
-                    Avatar = "image/userUnknown.png",
-                    City = "Unknown",
-                    Country = "Unknown",
-                    Description = "None",
-                    Email = account.Email,
-                    IdAccount = idAcc,
-                    Name = "Unknown",
-                    Phone = "Unknown",
-                    Rating = 1f
-                };
+                var profile = Profile.CreateEmpty(new(account.Email, account.Password, idAcc));
                 _context.Profile.Add(profile);
                 await _context.SaveChangesAsync();
 

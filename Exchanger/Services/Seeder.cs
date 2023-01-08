@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
+using Exchanger.Models.View;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Exchanger.Models.View;
 
 namespace Exchanger.Services
 {
@@ -12,111 +12,120 @@ namespace Exchanger.Services
     {
         public static async Task Initialize(IServiceProvider serviceProvider)
         {
-            using var context = new ExchangerContext(serviceProvider.GetRequiredService<DbContextOptions<ExchangerContext>>());
+            try
+            {
+                using var context = new ExchangerContext(serviceProvider.GetRequiredService<DbContextOptions<ExchangerContext>>());
 
-            if (context.Account.Any())
-            {
-                return;
-            }
+                if (context.Account.Any())
+                {
+                    return;
+                }
 
-            // clear all
-            foreach (var account in context.Account)
-            {
-                context.Account.Remove(account);
-            }
-            foreach (var profile in context.Profile)
-            {
-                context.Profile.Remove(profile);
-            }
-            foreach (var offer in context.Offer)
-            {
-                context.Offer.Remove(offer);
-            }
-            foreach (var offerToOffer in context.OfferToOffer)
-            {
-                context.OfferToOffer.Remove(offerToOffer);
-            }
-            await context.SaveChangesAsync();
+                // clear all
+                foreach (var account in context.Account)
+                {
+                    context.Account.Remove(account);
+                }
+                foreach (var profile in context.Profile)
+                {
+                    context.Profile.Remove(profile);
+                }
+                foreach (var offer in context.Offer)
+                {
+                    context.Offer.Remove(offer);
+                }
+                foreach (var offerToOffer in context.OfferToOffer)
+                {
+                    context.OfferToOffer.Remove(offerToOffer);
+                }
+                await context.SaveChangesAsync();
 
-            // add all
-            var accounts = await GetListOfTFromURL<Account>("https://my.api.mockaroo.com/users.json?key=faafb590");
-            if (accounts == null)
-            {
-                return;
-            }
-            await context.Account.AddRangeAsync(accounts);
+                // add all
+                var mockarooAPIKey = "faafb590";
 
-            var profiles = await GetListOfTFromURL<Profile>("https://my.api.mockaroo.com/profile.json?key=faafb590");
-            if (profiles == null)
-            {
-                return;
-            }
-            await context.SaveChangesAsync();
-            var accountsUpdated = await context.Account.ToListAsync();
-            for (var i = 0; i < accountsUpdated.Count; i++)
-            {
-                profiles[i].IdAccount = accountsUpdated[i].Id;
-                profiles[i].Avatar = "image/userUnknown.png";
-                profiles[i].Email = accounts[i].Email;
-            }
-            await context.Profile.AddRangeAsync(profiles);
+                var accounts = await GetListOfTFromURL<Account>($"https://my.api.mockaroo.com/users.json?key={mockarooAPIKey}");
+                if (accounts == null)
+                {
+                    return;
+                }
+                await context.Account.AddRangeAsync(accounts);
 
-            for (int k = 0; k < 3; k++)
-            {
-                var offers = await GetListOfTFromURL<Offer>("https://my.api.mockaroo.com/offer.json?key=faafb590");
-                if (offers == null)
+                var profiles = await GetListOfTFromURL<Profile>($"https://my.api.mockaroo.com/profile.json?key={mockarooAPIKey}");
+                if (profiles == null)
                 {
                     return;
                 }
                 await context.SaveChangesAsync();
-                var profilesUpdated = await context.Profile.ToListAsync();
-                for (var i = 0; i < profilesUpdated.Count; i++)
+                var accountsUpdated = await context.Account.ToListAsync();
+                for (var i = 0; i < accountsUpdated.Count; i++)
                 {
-                    offers[i].IdProfile = profilesUpdated[i].Id;
-                    string images = "";
-                    for (var j = 0; j < int.Parse(offers[i].Images); j++)
-                    {
-                        images += "image/itemUnknown.png|";
-                    }
-                    offers[i].Images = images.Remove(images.Length - 1);
+                    profiles[i].IdAccount = accountsUpdated[i].Id;
+                    profiles[i].Avatar = "~/wwwroot/image/userUnknown.png";
+                    profiles[i].Email = accounts[i].Email;
                 }
-                await context.Offer.AddRangeAsync(offers);
+                await context.Profile.AddRangeAsync(profiles);
+
+                for (var k = 0; k < 3; k++)
+                {
+                    var offers = await GetListOfTFromURL<Offer>($"https://my.api.mockaroo.com/offer.json?key={mockarooAPIKey}");
+                    if (offers == null)
+                    {
+                        return;
+                    }
+                    await context.SaveChangesAsync();
+                    var profilesUpdated = await context.Profile.ToListAsync();
+                    for (var i = 0; i < profilesUpdated.Count; i++)
+                    {
+                        offers[i].IdProfile = profilesUpdated[i].Id;
+                        string images = "";
+                        for (var j = 0; j < int.Parse(offers[i].Images); j++)
+                        {
+                            images += "~/wwwroot/image/itemUnknown.png|";
+                        }
+
+                        if (images.Length > 0)
+                        {
+                            images = images.Remove(images.Length - 1);
+                        }
+                        offers[i].Images = images;
+                    }
+                    await context.Offer.AddRangeAsync(offers);
+                    await context.SaveChangesAsync();
+                }
+
+                // add special
+                Account acc = new("a@a.a", "a@a.a");
+                await context.Account.AddAsync(acc);
+                await context.SaveChangesAsync();
+                var accUpdated = await context.Account.Where(account => account.Email == acc.Email && account.Password == acc.Password).FirstAsync();
+
+                Profile prof = new(
+                    acc.Email,
+                    "Romania",
+                    5f,
+                    "~/wwwroot/image/itemUnknown.png",
+                    "Claudiu HBann",
+                    "Nu risti, nu pierzi.",
+                    "0770337470",
+                    "Craiova",
+                    accUpdated.Id
+                    );
+                await context.Profile.AddAsync(prof);
+                await context.SaveChangesAsync();
+                var profUpdated = await context.Profile.Where(profile => profile.IdAccount == accUpdated.Id).FirstAsync();
+
+                await context.Offer.AddAsync(new(
+                    "Vand scula",
+                    "Pe bascula",
+                    "https://i0.wp.com/www.orgasmbox.co.uk/wp-content/uploads/2021/07/Dildo.jpg|https://media1.lajumate.ro/media/i/api_list/8/140/14090618_bascula-iveco-bremach_3.jpg",
+                    profUpdated.Id
+                    ));
                 await context.SaveChangesAsync();
             }
-
-            // add special
-            Account acc = new()
+            catch (Exception exception)
             {
-                Email = "a@a.a",
-                Password = "a@a.a"
-            };
-            await context.Account.AddAsync(acc);
-            await context.SaveChangesAsync();
-
-            var idAcc = context.Account.Where(account => account.Email == acc.Email && account.Password == acc.Password).First().Id;
-            Profile prof = new()
-            {
-                Avatar = "https://scontent.fcra1-1.fna.fbcdn.net/v/t39.30808-6/288147638_1697156760663806_412457527889072342_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=dkfHvdTknxcAX8ZXTNF&tn=p_LORh6lWoQDHZxv&_nc_ht=scontent.fcra1-1.fna&oh=00_AfAtkp6Y2ia8VmxMXqN6RE7t2tarVELJAQW7d2jKpMLXPg&oe=63B4F332",
-                City = "Craiova",
-                Country = "Romania",
-                Description = "Nu risti, nu pierzi.",
-                Email = "claudiu.hermann@caphyon.com",
-                IdAccount = idAcc,
-                Name = "Claudiu HBann",
-                Phone = "0770337470",
-                Rating = 5f
-            };
-            await context.Profile.AddAsync(prof);
-            await context.SaveChangesAsync();
-
-            await context.Offer.AddAsync(new()
-            {
-                IdProfile = context.Profile.Where(profile => profile.IdAccount == idAcc).First().Id,
-                Title = "Vand scula",
-                Description = "Pe bascula",
-                Images = "https://i0.wp.com/www.orgasmbox.co.uk/wp-content/uploads/2021/07/Dildo.jpg|https://media1.lajumate.ro/media/i/api_list/8/140/14090618_bascula-iveco-bremach_3.jpg"
-            });
-            await context.SaveChangesAsync();
+                Console.WriteLine(exception.Message);
+            }
         }
 
         static readonly HttpClient httpClient = new();

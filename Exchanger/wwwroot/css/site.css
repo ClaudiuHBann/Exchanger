@@ -1,22 +1,9 @@
 html {
-    font-size: 14px;
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-html {
     position: relative;
-    min-height: 100%;
 }
 
 .container-main {
-    margin-top: 4.33rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin: 4.33rem 1rem 0 1rem;
 }
 
 ul {
@@ -33,13 +20,12 @@ ul {
     text-align: center;
 }
 
-.font-size-bigger {
+.font-size-x-large {
     font-size: x-large;
 }
 
-.margin-y {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.margin-y-10px {
+    margin: 10px 0;
 }
 
 .nav-bar-item-profile-image {
@@ -117,8 +103,7 @@ ul.offers {
     grid-area: 1 / 2 / 2 / 3;
     font-size: larger;
     color: yellow;
-    margin: 10px;
-    margin-right: 50px;
+    margin: 10px 50px 10px 10px;
     justify-self: end;
     width: fit-content;
 }
@@ -131,8 +116,7 @@ ul.offers {
     color: #999999;
     margin: 10px;
     padding: 5px 10px;
-    border: none;
-    border-radius: 10px;
+    border: 10px none;
 }
 
 .offer-offer-button-exchange {
@@ -262,7 +246,7 @@ ul.offers {
 /* SCROLLBAR (GITHUB STYLE) */
 
 .twitter-verified-icon {
-    background-image: url('../image/twitter-verified-icon.png');
+    background-image: url('../image/iconTwitterVerified.png');
     background-size: 25px;
     background-repeat: no-repeat;
     background-position-x: right;
