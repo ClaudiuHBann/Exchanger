@@ -105,3 +105,75 @@
   }
 }
 </ul>
+
+@{
+    var prevDisabled = !offersAll.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !offersAll.HasNextPage ? "disabled" : "";
+}
+
+<div class="pagination">
+    <a asp-action="Index" asp-route-page="@(offersAll.Index - 1)" asp-route-keyword="@filter?.Keyword"
+    asp-route-country="@filter?.Country"
+    asp-route-city="@filter?.City" class="btn btn-default @prevDisabled">Previous</a>
+
+    @{
+        int leftRightSize = 2; // how many pages to show on left and right from current page index
+        // create the start and end page to show
+        int start = offersAll.Index - leftRightSize <= 0 ? 1 : offersAll.Index - leftRightSize;
+        int end = offersAll.Index + leftRightSize > offersAll.Total ? offersAll.Total : offersAll.Index + leftRightSize;
+
+        // if we can show the all the pages in the paginations size
+        if (offersAll.Total >= leftRightSize * 2 + 1) {
+            // clip the start or end values
+            if (start == 1) {
+                end = 1 + leftRightSize * 2;
+            } else if (end == offersAll.Total) {
+                start = offersAll.Total - leftRightSize * 2;
+            }
+        } else {
+            // clip the start and end values
+            start = 1;
+            end = offersAll.Total;
+        }
+
+        // if there are more pages than the pagination size and the page index is not 1 then we display the first page in the pagination
+        if (offersAll.Total >= leftRightSize * 2 + 1 &&
+        start != 1) {
+                <a asp-action="Index" asp-route-page="1" asp-route-keyword="@filter?.Keyword"
+    asp-route-country="@filter?.Country"
+    asp-route-city="@filter?.City" class="btn btn-default">1</a>
+        }
+        // we create the pages
+        for (int i = start; i <= end; i++) {
+            if (i == offersAll.Index) {
+                            <a asp-action="Index" asp-route-page="@i" asp-route-keyword="@filter?.Keyword"
+    asp-route-country="@filter?.Country"
+    asp-route-city="@filter?.City" class="btn btn-default">@i</a>
+            } else {
+                            <a asp-action="Index" asp-route-page="@i" asp-route-keyword="@filter?.Keyword"
+    asp-route-country="@filter?.Country"
+    asp-route-city="@filter?.City" class="btn btn-default">@i</a>
+            }
+        }
+        // if there are more pages than the pagination size and the page index is not the last one then we display the last page in the pagination
+        if (offersAll.Total >= leftRightSize * 2 + 1 &&
+        end != offersAll.Total) {
+            <a
+                asp-action="Index"asp-route-page="@offersAll.Total" asp-route-keyword="@filter?.Keyword"
+    asp-route-country="@filter?.Country"
+    asp-route-city="@filter?.City" class="btn btn-default">@offersAll.Total</a>
+        }
+    }
+
+    <a
+        asp-action="Index"
+        asp-route-page="@(offersAll.Index + 1)"
+        asp-route-keyword="@filter?.Keyword"
+        asp-route-country="@filter?.Country"
+        asp-route-city="@filter?.City"
+        class="btn btn-default @nextDisabled">Next</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
