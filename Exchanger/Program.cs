@@ -61,6 +61,6 @@ namespace Exchanger
 /*
     TODO:
          - seed with random photos (people & items)
-         - edit profile
+         - test everything
          - clean up the code
 */

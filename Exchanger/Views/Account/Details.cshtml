@@ -10,6 +10,7 @@
       var profile = (Profile?)ViewData["Profile"];
 
       <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
+      <a class="fa fa-pencil offers-edit" asp-controller="Account" asp-action="Edit" aria-hidden="true"></a>
       <div class="profile-split-left-name">@profile?.Name</div>
       <div class="profile-split-left-description">@profile?.Description</div>
 
