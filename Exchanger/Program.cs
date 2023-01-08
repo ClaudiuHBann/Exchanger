@@ -62,6 +62,5 @@ namespace Exchanger
     TODO:
          - seed with random photos (people & items)
          - edit profile
-         - edit offers
          - clean up the code
 */

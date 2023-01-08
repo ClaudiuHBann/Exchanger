@@ -113,6 +113,16 @@ ul.offers {
     width: fit-content;
 }
 
+.offers-edit {
+    grid-area: 1 / 2 / 2 / 3;
+    font-size: larger;
+    color: yellow;
+    margin: 10px;
+    margin-right: 50px;
+    justify-self: end;
+    width: fit-content;
+}
+
 .offers-offer {
     grid-area: 4 / 2 / 4 / 2;
     background-color: #121212;

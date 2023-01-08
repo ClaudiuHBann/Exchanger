@@ -44,6 +44,7 @@
                   <img class="offers-li-profile-image" src="image/userUnknown.png"/>
                   <div class="offers-li-items">@offers[i].Title</div>
                   <a class="fa fa-trash offers-delete" asp-controller="Offer" asp-action="Delete" asp-route-id="@offers[i].Id" aria-hidden="true"></a>
+                  <a class="fa fa-pencil offers-edit" asp-controller="Offer" asp-action="Edit" asp-route-id="@offers[i].Id" aria-hidden="true"></a>
                   <div class="offers-li-description">@offers[i].Description</div>
                   <div class="offers-li-images-container">
                       @{
