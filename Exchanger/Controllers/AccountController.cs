@@ -60,7 +60,7 @@ namespace Exchanger.Controllers
             return View(account);
         }
 
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
             return RedirectToAction(nameof(Index));

@@ -109,16 +109,13 @@ namespace Exchanger.Controllers
             await context.Profile.AddAsync(prof);
             await context.SaveChangesAsync();
 
-            for (int i = 0; i < 5; i++)
+            await context.Offer.AddAsync(new()
             {
-                await context.Offer.AddAsync(new()
-                {
-                    IdProfile = context.Profile.Where(profile => profile.IdAccount == idAcc).First().Id,
-                    Title = "Vand scula",
-                    Description = "Pe bascula",
-                    Images = "https://i0.wp.com/www.orgasmbox.co.uk/wp-content/uploads/2021/07/Dildo.jpg|https://media1.lajumate.ro/media/i/api_list/8/140/14090618_bascula-iveco-bremach_3.jpg"
-                });
-            }
+                IdProfile = context.Profile.Where(profile => profile.IdAccount == idAcc).First().Id,
+                Title = "Vand scula",
+                Description = "Pe bascula",
+                Images = "https://i0.wp.com/www.orgasmbox.co.uk/wp-content/uploads/2021/07/Dildo.jpg|https://media1.lajumate.ro/media/i/api_list/8/140/14090618_bascula-iveco-bremach_3.jpg"
+            });
             await context.SaveChangesAsync();
         }
 

@@ -63,6 +63,5 @@ namespace Exchanger
          - seed with random photos (people & items)
          - edit profile
          - edit offers
-         - paging on the global offers
-         - filters for the global offers
+         - clean up the code
 */

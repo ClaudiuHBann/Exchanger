@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Filter
+
+@{
   ViewData["Title"] = "Global";
 }
 
@@ -50,9 +52,38 @@
 
 <h2 class="text-center theme-color-front-text">Global Offers</h2>
 
+@{
+    var filter = (Filter?)ViewData["Offers.Filter"];
+}
+
+<form asp-action="Filter" asp>
+    <input asp-for="Keyword" />
+    <select asp-for="Country" class="form-select">
+        <option selected>Country</option>
+        @{
+            var offersCountries = (List<string>?)ViewData["Offers.Countries"];
+        }
+        @for (int i = 0; i < offersCountries?.Count; i++)
+        {
+            <option value="@offersCountries[i]">@offersCountries[i]</option> 
+        }
+    </select>
+    <select asp-for="City" class="form-select">
+        <option>City</option>
+        @{
+            var offersCities = (List<string>?)ViewData["Offers.Cities"];
+        }
+        @for (int i = 0; i < offersCities?.Count; i++)
+        {
+            <option value="@offersCities[i]">@offersCities[i]</option> 
+        }
+    </select>
+    <input class="btn btn-primary btn-lg btn-block theme-color-front-text" type="submit" value="Search"/>
+</form>
+
 <ul class="offers">
   @{
-    var offersAll = (List<Offer>?)ViewData["Offers.All"];
+    var offersAll = (ListPaginated<Offer>?)ViewData["Offers.All"];
     for (int i = 0; i < offersAll?.Count; i++)
     {
       var offerAllCurrent = offersAll[i];
