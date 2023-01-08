@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Exchanger.Models
+namespace Exchanger.Services
 {
     public class ListPaginated<T> : List<T>
     {

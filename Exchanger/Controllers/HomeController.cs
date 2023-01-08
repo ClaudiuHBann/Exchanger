@@ -1,6 +1,7 @@
 ﻿using Exchanger.Data;
 using Exchanger.Models;
-
+using Exchanger.Models.View;
+using Exchanger.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

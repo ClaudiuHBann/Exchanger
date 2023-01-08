@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Exchanger.Models
+namespace Exchanger.Models.View
 {
     public class Profile
     {

@@ -1,6 +1,7 @@
 ﻿using Exchanger.Data;
+using Exchanger.Models;
 
-namespace Exchanger.Models
+namespace Exchanger.Services
 {
     public class OfferToOfferUtility
     {

@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
-using Exchanger.Models;
+using Exchanger.Services;
+using Exchanger.Models.View;
 
 namespace Exchanger.Controllers
 {

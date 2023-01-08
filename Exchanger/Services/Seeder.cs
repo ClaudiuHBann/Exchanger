@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
-using Exchanger.Models;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Exchanger.Models.View;
 
-namespace Exchanger.Controllers
+namespace Exchanger.Services
 {
     public class Seeder
     {

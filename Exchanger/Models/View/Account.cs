@@ -1,4 +1,4 @@
-﻿namespace Exchanger.Models
+﻿namespace Exchanger.Models.View
 {
     public class Account
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
-using Exchanger.Controllers;
+using Exchanger.Services;
 
 namespace Exchanger
 {

@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
-using Exchanger.Models;
 
 using System.Data;
 using System.Text;
+using Exchanger.Models.View;
 
 namespace Exchanger.Controllers
 {

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-using Exchanger.Models;
+using Exchanger.Models.View;
 
 namespace Exchanger.Data
 {

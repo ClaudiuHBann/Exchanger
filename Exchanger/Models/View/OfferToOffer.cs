@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Exchanger.Models
+namespace Exchanger.Models.View
 {
-  public class OfferToOffer
-  {
+    public class OfferToOffer
+    {
         public int Id { get; set; }
         [ForeignKey("Offer")]
         public int IdOffer { get; set; }
