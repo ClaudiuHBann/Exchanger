@@ -28,6 +28,10 @@ ul {
     margin: 10px 0;
 }
 
+.margin-x-5px {
+    margin: 0 5px;
+}
+
 .nav-bar-item-profile-image {
     margin: auto 0;
     width: 50%;

@@ -1,7 +1,8 @@
 ﻿using Exchanger.Data;
 using Exchanger.Models;
-using Exchanger.Models.View;
 using Exchanger.Services;
+using Exchanger.Models.View;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,55 +12,38 @@ namespace Exchanger.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ExchangerContext _context;
+        readonly ExchangerContext _context;
 
         public HomeController(ExchangerContext context)
         {
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? page, string? keyword, string? country, string? city)
-        {
-            var idProfile = HttpContext.Session.GetInt32("Profile.Id");
-            var offersAll = _context.Offer.Where(offer => offer.IdProfile != idProfile);
-
-            var (countries, cities) = GetOfferLocationAll(offersAll);
-            ViewData["Offers.Countries"] = countries.OrderBy(country => country).ToList();
-            ViewData["Offers.Cities"] = cities.OrderBy(city => city).ToList();
-
-            Filter filter = new()
-            {
-                Keyword = keyword,
-                Country = country,
-                City = city,
-            };
-            ViewData["Offers.Filter"] = filter;
-            offersAll = FilterOffers(offersAll, filter);
-
-            ViewData["Offers.All"] = await ListPaginated<Offer>.CreateAsync(offersAll.OrderByDescending(o => o.Id), page ?? 1);
-            ViewData["Offers.Mine"] = await _context.Offer.Where(o => o.IdProfile == idProfile).OrderByDescending(o => o.Id).ToListAsync();
-
-            return View("Index", filter);
-        }
-
         IQueryable<Offer> FilterOffers(IQueryable<Offer> offers, Filter filter)
         {
-            if (!string.IsNullOrEmpty(filter.Keyword))
+            try
             {
-                var offersAllFilteredByKeyword1 = offers.Where(offer => offer.Title.Contains(filter.Keyword));
-                var offersAllFilteredByKeyword2 = offers.Where(offer => offer.Description != null && offer.Description.Contains(filter.Keyword));
+                if (!string.IsNullOrEmpty(filter.Keyword))
+                {
+                    var offersAllFilteredByKeyword1 = offers.Where(offer => offer.Title.Contains(filter.Keyword));
+                    var offersAllFilteredByKeyword2 = offers.Where(offer => offer.Description != null && offer.Description.Contains(filter.Keyword));
 
-                offers = offersAllFilteredByKeyword1.Concat(offersAllFilteredByKeyword2).Distinct();
+                    offers = offersAllFilteredByKeyword1.Concat(offersAllFilteredByKeyword2).Distinct();
+                }
+
+                if (filter.Country != null && filter.Country != "Country")
+                {
+                    offers = offers.Where(offer => _context.Profile.Where(profile => profile.Id == offer.IdProfile).First().Country == filter.Country);
+                }
+
+                if (filter.City != null && filter.City != "City")
+                {
+                    offers = offers.Where(offer => filter.City != null && _context.Profile.Where(profile => profile.Id == offer.IdProfile).First().City == filter.City);
+                }
             }
-
-            if (filter.Country != null && filter.Country != "Country")
+            catch (Exception exception)
             {
-                offers = offers.Where(offer => _context.Profile.Where(profile => profile.Id == offer.IdProfile).First().Country == filter.Country);
-            }
-
-            if (filter.City != null && filter.City != "City")
-            {
-                offers = offers.Where(offer => filter.City != null && _context.Profile.Where(profile => profile.Id == offer.IdProfile).First().City == filter.City);
+                Console.WriteLine(exception.Message);
             }
 
             return offers;
@@ -67,11 +51,19 @@ namespace Exchanger.Controllers
 
         (string country, string? city) GetOfferLocation(Offer offer)
         {
-            var profile = _context.Profile.Where(profile => profile.Id == offer.IdProfile).First();
-            return (profile.Country, profile.City);
+            try
+            {
+                var profile = _context.Profile.Where(profile => profile.Id == offer.IdProfile).First();
+                return (profile.Country, profile.City);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return ("", null);
+            }
         }
 
-        (IQueryable<string> countries, IQueryable<string> cities) GetOfferLocationAll(IQueryable<Offer> offers)
+        (IQueryable<string>? countries, IQueryable<string>? cities) GetOfferLocationAll(IQueryable<Offer> offers)
         {
             HashSet<string> countries = new();
             HashSet<string> cities = new();
@@ -80,43 +72,97 @@ namespace Exchanger.Controllers
             {
                 var (country, city) = GetOfferLocation(offer);
 
-                countries.Add(country);
-                if (city != null)
+                if (country != "")
+                {
+                    countries.Add(country);
+                }
+
+                if (!string.IsNullOrEmpty(city))
                 {
                     cities.Add(city);
                 }
             }
 
-            return (countries.AsQueryable(), cities.AsQueryable());
+            try
+            {
+                return (countries.AsQueryable(), cities.AsQueryable());
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return (null, null);
+            }
+        }
+
+        public async Task<IActionResult> Index(int? page, string? keyword, string? country, string? city)
+        {
+            var idProfile = HttpContext.Session.GetInt32("Profile.Id");
+            var offersAll = _context.Offer.Where(offer => offer.IdProfile != idProfile);
+
+            var (countries, cities) = GetOfferLocationAll(offersAll);
+            if (countries != null)
+            {
+                ViewData["Offers.Countries"] = await countries.OrderBy(country => country).ToListAsync();
+            }
+            if (cities != null)
+            {
+                ViewData["Offers.Cities"] = await cities.OrderBy(city => city).ToListAsync();
+            }
+
+            Filter filter = new(keyword, country, city);
+            ViewData["Offers.Filter"] = filter;
+
+            offersAll = FilterOffers(offersAll, filter);
+
+            ViewData["Offers.All"] = await ListPaginated<Offer>.CreateAsync(offersAll.OrderByDescending(o => o.Id), page ?? 1);
+            ViewData["Offers.Mine"] = await _context.Offer.Where(o => o.IdProfile == idProfile).OrderByDescending(o => o.Id).ToListAsync();
+
+            return View(filter);
+        }
+
+        static string CreateQueryFromFilter(Filter filter)
+        {
+            string query = "";
+
+            if (!filter.Empty)
+            {
+                if (!string.IsNullOrEmpty(filter.Keyword))
+                {
+                    query += $"keyword={filter.Keyword}&";
+                }
+
+                if (filter.Country != null && filter.Country != "Country")
+                {
+                    query += $"country={filter.Country}&";
+                }
+
+                if (filter.City != null && filter.City != "City")
+                {
+                    query += $"city={filter.City}&";
+                }
+
+                try
+                {
+                    if (query.Last() == '&')
+                    {
+                        query = query.Remove(query.Length - 1);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                    return "";
+                }
+            }
+
+            return query;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Filter([Bind("Country,City,Keyword")] Filter filter)
+        public IActionResult Filter([Bind("Keyword,Country,City")] Filter filter)
         {
-            var url = "~/?";
-
-            if (!string.IsNullOrEmpty(filter.Keyword))
-            {
-                url += "keyword=" + filter.Keyword + "&";
-            }
-
-            if (filter.Country != null && filter.Country != "Country")
-            {
-                url += "country=" + filter.Country + "&";
-            }
-
-            if (filter.City != null && filter.City != "City")
-            {
-                url += "city=" + filter.City + "&";
-            }
-
-            if (url.Last() == '&')
-            {
-                url = url.Remove(url.Length - 1);
-            }
-
-            return Redirect(url);
+            return Redirect($"~/?{CreateQueryFromFilter(filter)}");
         }
 
         public IActionResult Privacy()
