@@ -1,4 +1,4 @@
-﻿@model Account
+﻿@model Exchanger.Models.View.Account
 
 @{
   ViewData["Title"] = "Profile";
@@ -7,7 +7,7 @@
 <div class="profile-split">
     <div class="profile-split-left">
     @{
-      var profile = (Profile?)ViewData["Profile"];
+      var profile = (Exchanger.Models.View.Profile?)ViewData["Profile"];
 
       <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
       <a class="fa fa-pencil offers-edit" asp-controller="Account" asp-action="Edit" aria-hidden="true"></a>
@@ -38,7 +38,7 @@
         <a class="fa fa-plus offers-add" href="~/Offer/Create" aria-hidden="true"></a>
         <ul class="offers">
         @{
-          var offers = (List<Offer>?)ViewData["Offers"];
+          var offers = (List<Exchanger.Models.View.Offer>?)ViewData["Offers"];
           for (int i = 0; i < offers?.Count; i++)
           {
               <li>

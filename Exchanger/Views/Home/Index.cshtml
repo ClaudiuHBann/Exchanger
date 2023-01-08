@@ -24,7 +24,7 @@
       <div class="modal-body">
           <ul class="offers">
           @{
-            var offersMine = (List<Offer>?)ViewData["Offers.Mine"];
+            var offersMine = (List<Exchanger.Models.View.Offer>?)ViewData["Offers.Mine"];
             for (int i = 0; i < offersMine?.Count; i++)
             {
             <li>
@@ -83,7 +83,7 @@
 
 <ul class="offers">
   @{
-    var offersAll = (ListPaginated<Offer>?)ViewData["Offers.All"];
+    var offersAll = (Exchanger.Services.ListPaginated<Exchanger.Models.View.Offer>?)ViewData["Offers.All"];
     for (int i = 0; i < offersAll?.Count; i++)
     {
       var offerAllCurrent = offersAll[i];
