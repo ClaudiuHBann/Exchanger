@@ -25,7 +25,7 @@ namespace Exchanger.Controllers
 
             ViewData["Offers.YourOther"] = OfferToOfferUtility.GetOfferToOfferViewsYourOther(_context, (int)profileId);
 
-            return View("~/Views/OfferOffer/YourOther.cshtml");
+            return View("~/Views/OfferToOffer/YourOther.cshtml");
         }
 
         public IActionResult OtherYour()
@@ -38,7 +38,7 @@ namespace Exchanger.Controllers
 
             ViewData["Offers.OtherYour"] = OfferToOfferUtility.GetOfferToOfferViewsOtherYour(_context, (int)profileId);
 
-            return View("~/Views/OfferOffer/OtherYour.cshtml");
+            return View("~/Views/OfferToOffer/OtherYour.cshtml");
         }
 
         public async Task<IActionResult> Exchange(int? id)

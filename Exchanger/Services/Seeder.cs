@@ -60,7 +60,7 @@ namespace Exchanger.Services
                 for (var i = 0; i < accountsUpdated.Count; i++)
                 {
                     profiles[i].IdAccount = accountsUpdated[i].Id;
-                    profiles[i].Avatar = "~/wwwroot/image/userUnknown.png";
+                    profiles[i].Avatar = "~/image/userUnknown.png";
                     profiles[i].Email = accounts[i].Email;
                 }
                 await context.Profile.AddRangeAsync(profiles);
@@ -80,7 +80,7 @@ namespace Exchanger.Services
                         string images = "";
                         for (var j = 0; j < int.Parse(offers[i].Images); j++)
                         {
-                            images += "~/wwwroot/image/itemUnknown.png|";
+                            images += "~/image/itemUnknown.png|";
                         }
 
                         if (images.Length > 0)
@@ -103,7 +103,7 @@ namespace Exchanger.Services
                     acc.Email,
                     "Romania",
                     5f,
-                    "~/wwwroot/image/itemUnknown.png",
+                    "~/image/itemUnknown.png",
                     "Claudiu HBann",
                     "Nu risti, nu pierzi.",
                     "0770337470",

@@ -2,6 +2,10 @@ html {
     position: relative;
 }
 
+a {
+    text-decoration: none;
+}
+
 .container-main {
     margin: 4.33rem 1rem 0 1rem;
 }
@@ -22,6 +26,10 @@ ul {
 
 .font-size-x-large {
     font-size: x-large;
+}
+
+.font-size-medium {
+    font-size: medium;
 }
 
 .margin-y-10px {

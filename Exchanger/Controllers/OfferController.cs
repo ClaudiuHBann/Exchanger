@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 
 using Exchanger.Data;
-using Exchanger.Services;
 using Exchanger.Models.View;
 
 namespace Exchanger.Controllers
@@ -16,31 +15,6 @@ namespace Exchanger.Controllers
             _context = context;
         }
 
-        /*// GET: Offer
-        public async Task<IActionResult> Index()
-        {
-              return View(await _context.Offer.ToListAsync());
-        }
-
-        // GET: Offer/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Offer == null)
-            {
-                return NotFound();
-            }
-
-            var offer = await _context.Offer
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (offer == null)
-            {
-                return NotFound();
-            }
-
-            return View(offer);
-        }*/
-
-        // GET: Offer/Create
         public IActionResult Create()
         {
             return View();
@@ -51,31 +25,50 @@ namespace Exchanger.Controllers
         {
             if (id != null && idOffer != null)
             {
-                await _context.OfferToOffer.AddAsync(new OfferToOffer((int)id, (int)idOffer));
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.OfferToOffer.AddAsync(new OfferToOffer((int)id, (int)idOffer));
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
             }
 
             return Redirect("~/");
         }
 
-        // POST: Offer/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description,Images")] Offer offer)
         {
             if (ModelState.IsValid)
             {
-                offer.IdProfile = (int)HttpContext.Session.GetInt32("Profile.Id");
-                _context.Add(offer);
-                await _context.SaveChangesAsync();
+                var profileId = HttpContext.Session.GetInt32("Profile.Id");
+                if (profileId == null)
+                {
+                    return NotFound();
+                }
+
+                offer.IdProfile = (int)profileId;
+
+                try
+                {
+                    await _context.AddAsync(offer);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
                 return Redirect("~/Account");
             }
-            return View(offer);
+
+            return Redirect("~/Profile");
         }
 
-        // GET: Offer/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Offer == null)
@@ -83,17 +76,23 @@ namespace Exchanger.Controllers
                 return NotFound();
             }
 
-            var offer = await _context.Offer.FindAsync(id);
-            if (offer == null)
+            try
             {
+                var offer = await _context.Offer.FindAsync(id);
+                if (offer == null)
+                {
+                    return NotFound();
+                }
+
+                return View(offer);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
                 return NotFound();
             }
-            return View(offer);
         }
 
-        // POST: Offer/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdProfile,Title,Description,Images")] Offer offer)
@@ -110,23 +109,15 @@ namespace Exchanger.Controllers
                     _context.Update(offer);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception exception)
                 {
-                    if (!OfferExists(offer.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Console.WriteLine(exception.Message);
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(offer);
+
+            return Redirect("~/Profile");
         }
 
-        // GET: Offer/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Offer == null)
@@ -134,38 +125,46 @@ namespace Exchanger.Controllers
                 return NotFound();
             }
 
-            var offer = await _context.Offer
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (offer == null)
+            try
             {
-                return NotFound();
+                var offer = await _context.Offer.FirstAsync(m => m.Id == id);
+                if (offer == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
             }
 
-            return View(offer);
+            return Redirect("~/Profile");
         }
 
-        // POST: Offer/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Offer == null)
             {
-                return Problem("Entity set 'ExchangerContext.Offer'  is null.");
+                return Problem("Entity set 'ExchangerContext.Offer' is null.");
             }
-            var offer = await _context.Offer.FindAsync(id);
-            if (offer != null)
+
+            try
             {
-                _context.Offer.Remove(offer);
+                var offer = await _context.Offer.FindAsync(id);
+                if (offer != null)
+                {
+                    _context.Offer.Remove(offer);
+                }
+
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
             return Redirect("~/Account");
-        }
-
-        private bool OfferExists(int id)
-        {
-            return _context.Offer.Any(e => e.Id == id);
         }
     }
 }

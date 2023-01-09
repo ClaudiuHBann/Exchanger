@@ -15,12 +15,11 @@ namespace Exchanger.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return await Details(HttpContext.Session.GetInt32("Account.Id"));
         }
 
-        // GET: Account/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Account == null)
@@ -28,30 +27,43 @@ namespace Exchanger.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (account == null)
+            try
             {
+                var account = await _context.Account.FirstAsync(m => m.Id == id);
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                await PopulateProfile(account);
+                return View("Details");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
                 return NotFound();
             }
-
-            await PopulateProfile(account);
-            return View("Details");
         }
 
         public async Task PopulateProfile(Account account)
         {
-            var profile = await _context.Profile.FirstOrDefaultAsync(p => p.IdAccount == account.Id);
-            if (profile == null)
+            try
             {
-                return;
-            }
+                var profile = await _context.Profile.FirstAsync(p => p.IdAccount == account.Id);
+                if (profile == null)
+                {
+                    return;
+                }
 
-            ViewData["Profile"] = profile;
-            ViewData["Offers"] = await _context.Offer.Where(o => o.IdProfile == profile.Id).OrderByDescending(o => o.Id).ToListAsync();
+                ViewData["Profile"] = profile;
+                ViewData["Offers"] = await _context.Offer.Where(o => o.IdProfile == profile.Id).OrderByDescending(o => o.Id).ToListAsync();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
-        // GET: Account/Edit/5
         public async Task<IActionResult> Edit()
         {
             var idProfile = HttpContext.Session.GetInt32("Profile.Id");
@@ -60,17 +72,23 @@ namespace Exchanger.Controllers
                 return NotFound();
             }
 
-            var profile = await _context.Profile.Where(profile => profile.Id == idProfile).FirstAsync();
-            if (profile == null)
+            try
             {
+                var profile = await _context.Profile.Where(profile => profile.Id == idProfile).FirstAsync();
+                if (profile == null)
+                {
+                    return NotFound();
+                }
+
+                return View(profile);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
                 return NotFound();
             }
-            return View(profile);
         }
 
-        // POST: Account/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("Avatar,Name,Description,Email,Phone,Country,City,Rating")] Profile profile)
@@ -84,21 +102,22 @@ namespace Exchanger.Controllers
 
             profile.Id = (int)idProfile;
             profile.IdAccount = (int)idAccount;
-            var profileOld = _context.Profile.Where(p => p.Id == idProfile).First();
-            profile.Rating = profileOld.Rating;
-
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var profileOld = await _context.Profile.Where(p => p.Id == idProfile).FirstAsync();
+                profile.Rating = profileOld.Rating;
+
+                if (ModelState.IsValid)
                 {
                     _context.Entry(profileOld).CurrentValues.SetValues(profile);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                }
-                return await Details(idAccount);
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
             return await Details(idAccount);
         }
     }

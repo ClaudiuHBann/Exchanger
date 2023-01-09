@@ -4,14 +4,14 @@
   ViewData["Title"] = "Log In";
 }
 
-<form asp-action="Login" class="vh-100">
+<form asp-controller="Account" asp-action="Login" class="vh-100 font-size-medium">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
           <div class="card-body theme-color-front-bg p-5 text-center" style="border-radius: 14px">
 
-            <h3 class="mb-5 theme-color-back-text">Log In</h3>
+            <h3 class="mb-5 theme-color-back-text">Login</h3>
 
             <div class="form-outline mb-4">
               <input asp-for="Email" type="email" id="typeEmailX-2" class="form-control form-control-lg" />
@@ -30,7 +30,7 @@
               <label class="form-check-label" style="color: #999999;" for="form1Example3"> Remember password </label>
             </div>
 
-            <button class="btn btn-primary btn-lg btn-block theme-color-front-text" type="submit">Login</button>
+            <button class="btn btn-primary btn-lg font-size-medium btn-block theme-color-front-text" type="submit">Login</button>
 
             <div class="text-center" style="margin-top:25px;">
                 <p style="color: #999999;">Not a member? <a href="~/Account/SignUp">Sign Up</a></p>
@@ -38,9 +38,9 @@
 
             <hr class="my-4">
 
-            <button class="btn btn-lg btn-block btn-primary theme-color-front-text" style="background-color: #dd4b39;"
+            <button class="btn btn-lg btn-block btn-primary font-size-medium theme-color-front-text" style="background-color: #dd4b39;"
               type="submit"><i class="fab fa-google me-2"></i> Sign in with google</button>
-            <button class="btn btn-lg btn-block btn-primary mb-2 theme-color-front-text" style="background-color: #3b5998;"
+            <button class="btn btn-lg btn-block btn-primary mb-2 font-size-medium theme-color-front-text" style="background-color: #3b5998;"
               type="submit"><i class="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
 
           </div>

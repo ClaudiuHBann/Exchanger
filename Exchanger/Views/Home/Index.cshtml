@@ -29,7 +29,7 @@
             for (var i = 0; offersMine != null && i < offersMine.Count; i++)
             {
                   <li>
-                    <img class="offers-li-profile-image" src="~/wwwroot/image/itemUnknown.png"/>
+                    <img class="offers-li-profile-image" src="image/userUnknown.png"/>
                     <div class="offers-li-items">@offersMine[i].Title</div>
                     <div class="offers-li-description">@offersMine[i].Description</div>
                     <div class="offers-li-images-container">
@@ -80,7 +80,7 @@
         <option value="@offersCities[i]">@offersCities[i]</option> 
       }
     </select>
-    <input class="theme-color-front-bg theme-color-back-text border-secondary" style="border-radius: 5px;" type="submit" value="Search"/>
+    <input class="btn theme-color-front-bg theme-color-front-text" type="submit" value="Search"/>
 </form>
 
 <ul class="offers">
@@ -90,7 +90,7 @@
     {
       var offerAllCurrent = offersAll[i];
       <li>
-        <img class="offers-li-profile-image" src="~/wwwroot/image/itemUnknown.png"/>
+        <img class="offers-li-profile-image" src="image/userUnknown.png"/>
         <div class="offers-li-items">@offerAllCurrent.Title</div>
         <div class="offers-li-description">@offerAllCurrent.Description</div>
         <div class="offers-li-images-container">

@@ -17,14 +17,16 @@ namespace Exchanger.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        [Route("Account/")]
         [Route("Account/Login")]
-        [Route("Account/Index")]
         public IActionResult Index()
         {
             var accountActive = HttpContext.Session.GetInt32("Account.Active");
-            if (accountActive != null && accountActive == 1)
+            var profileId = HttpContext.Session.GetInt32("Account.Id");
+            if (accountActive != null && accountActive == 1 && profileId != null)
             {
-                return Redirect($"~/Profile/Details/{HttpContext.Session.GetInt32("Account.Id")}");
+                return Redirect($"~/Profile/Details/{profileId}");
             }
             else
             {
@@ -44,17 +46,15 @@ namespace Exchanger.Controllers
                     {
                         HttpContext.Session.SetInt32("Account.Active", 1);
 
-                        var acc = _context.Account.Where(a => a.Email == account.Email && a.Password == account.Password).FirstAsync();
+                        var acc = await _context.Account.Where(a => a.Email == account.Email && a.Password == account.Password).FirstAsync();
 
                         HttpContext.Session.SetInt32("Account.Id", acc.Id);
                         HttpContext.Session.SetString("Account.Email", account.Email);
                         HttpContext.Session.SetString("Account.Password", account.Password);
 
-                        var prof = await _context.Profile.Where(p => p.IdAccount == acc.Id).FirstAsync();
-                        HttpContext.Session.SetInt32("Profile.Id", prof.Id);
+                        var profile = await _context.Profile.Where(p => p.IdAccount == acc.Id).FirstAsync();
+                        HttpContext.Session.SetInt32("Profile.Id", profile.Id);
                     }
-
-                    return Index();
                 }
                 catch (Exception exception)
                 {
@@ -63,7 +63,7 @@ namespace Exchanger.Controllers
                 }
             }
 
-            return View(account);
+            return Index();
         }
 
         public IActionResult LogOut()
@@ -94,7 +94,7 @@ namespace Exchanger.Controllers
                     await _context.Profile.AddAsync(profile);
                     await _context.SaveChangesAsync();
 
-                    return await Login(acc);
+                    return Index();
                 }
                 catch (Exception exception)
                 {

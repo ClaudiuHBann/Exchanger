@@ -6,30 +6,30 @@
 
 <div class="profile-split">
     <div class="profile-split-left">
-    @{
-      var profile = (Exchanger.Models.View.Profile?)ViewData["Profile"];
-
-      <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
-      <a class="fa fa-pencil offers-edit" asp-controller="Account" asp-action="Edit" aria-hidden="true"></a>
-      <div class="profile-split-left-name">@profile?.Name</div>
-      <div class="profile-split-left-description">@profile?.Description</div>
-
+      @{
+        var profile = (Exchanger.Models.View.Profile?)ViewData["Profile"];
+      
+        <img class="profile-split-left-avatar twitter-verified-icon" src="@profile?.Avatar" />
+        <a class="fa fa-pencil offers-edit" asp-controller="Profile" asp-action="Edit" aria-hidden="true"></a>
+        <div class="profile-split-left-name">@profile?.Name</div>
+        <div class="profile-split-left-description">@profile?.Description</div>
+      
         <div class="margin-y-10px font-size-x-large">Contact:</div>
-      <div class="profile-split-left-phone">Phone: @profile?.Phone</div>
-      <div class="profile-split-left-email">Email: @profile?.Email</div>
-      
+        <div class="profile-split-left-phone">Phone: @profile?.Phone</div>
+        <div class="profile-split-left-email">Email: @profile?.Email</div>
+        
         <div class="margin-y-10px font-size-x-large">Location:</div>
-      <div class="profile-split-left-country">Country: @profile?.Country</div>
-      <div class="profile-split-left-city">City: @profile?.City</div>
-      
+        <div class="profile-split-left-country">Country: @profile?.Country</div>
+        <div class="profile-split-left-city">City: @profile?.City</div>
+        
         <div class="margin-y-10px font-size-x-large">Rating:</div>
-      var stars = "";
-      @for (int i = 0; i < MathF.Floor(profile.Rating); i++)
-      {
-        stars += "⭐";
+        var stars = "⭐";
+        @for (var i = 1; profile != null && i < MathF.Floor(profile.Rating); i++)
+        {
+          stars += "⭐";
+        }
+        <div class="profile-split-left-rating">@stars</div>
       }
-      <div class="profile-split-left-rating">@stars</div>
-    }
     </div>
 
     <div class="profile-split-right">
@@ -37,10 +37,10 @@
 
         <a class="fa fa-plus offers-add" href="~/Offer/Create" aria-hidden="true"></a>
         <ul class="offers">
-        @{
-          var offers = (List<Exchanger.Models.View.Offer>?)ViewData["Offers"];
-          for (int i = 0; i < offers?.Count; i++)
-          {
+          @{
+            var offers = (List<Exchanger.Models.View.Offer>?)ViewData["Offers"];
+            for (var i = 0; offers != null && i < offers.Count; i++)
+            {
               <li>
                   <img class="offers-li-profile-image" src="image/userUnknown.png"/>
                   <div class="offers-li-items">@offers[i].Title</div>
@@ -48,17 +48,17 @@
                   <a class="fa fa-pencil offers-edit" asp-controller="Offer" asp-action="Edit" asp-route-id="@offers[i].Id" aria-hidden="true"></a>
                   <div class="offers-li-description">@offers[i].Description</div>
                   <div class="offers-li-images-container">
-                      @{
-                          var images = offers[i]?.Images.Split('|');
-                          @for (int j = 0; j < images?.Length; j++)
-                          {
-                              <img class="offers-li-images-item" src="@images[j]" />     
-                          }
+                    @{
+                      var images = offers[i].Images.Split('|');
+                      @for (var j = 0; images != null && j < images.Length; j++)
+                      {
+                          <img class="offers-li-images-item" src="@images[j]" />     
                       }
+                    }
                   </div>
               </li>
+            }
           }
-        }
         </ul>
     </div>
 </div>
