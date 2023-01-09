@@ -28,21 +28,21 @@
             var offersMine = (List<Exchanger.Models.View.Offer>?)ViewData["Offers.Mine"];
             for (var i = 0; offersMine != null && i < offersMine.Count; i++)
             {
-              <li>
-                <img class="offers-li-profile-image" src="~/wwwroot/image/itemUnknown.png"/>
-                <div class="offers-li-items">@offersMine[i].Title</div>
-                <div class="offers-li-description">@offersMine[i].Description</div>
-                <div class="offers-li-images-container">
-                @{
-                  var images = offersMine[i].Images.Split('|');
-                  @for (int j = 0; images != null && j < images.Length; j++)
-                  {
-                    <img class="offers-li-images-item" src="@images[j]" />     
+                  <li>
+                    <img class="offers-li-profile-image" src="~/wwwroot/image/itemUnknown.png"/>
+                    <div class="offers-li-items">@offersMine[i].Title</div>
+                    <div class="offers-li-description">@offersMine[i].Description</div>
+                    <div class="offers-li-images-container">
+                  @{
+                    var images = offersMine[i].Images.Split('|');
+                    @for (int j = 0; images != null && j < images.Length; j++)
+                    {
+                            <img class="offers-li-images-item" src="@images[j]" />     
+                    }
                   }
-                }
-                </div>
-                <a id="idOffer" class="offers-offer btn" href="~/Offer/idOffer/@offersMine[i].Id">Offer</a>
-              </li>
+                    </div>
+                    <a id="idOffer" class="offers-offer btn" href="~/Offer/idOffer/@offersMine[i].Id">Offer</a>
+                  </li>
             }
           }
         </ul>
@@ -58,29 +58,29 @@
   var filter = (Filter?)ViewData["Offers.Filter"];
 }
 
-<form asp-action="Filter" asp>
-    <input asp-for="Keyword" />
-    <select asp-for="Country" class="form-select">
-        <option selected>Country</option>
-        @{
-          var offersCountries = (List<string>?)ViewData["Offers.Countries"];
-        }
-        @for (var i = 0; offersCountries != null && i < offersCountries.Count; i++)
-        {
-          <option value="@offersCountries[i]">@offersCountries[i]</option> 
-        }
+<form asp-action="Filter" class="d-inline-flex flex-grow-1 w-100 gap-1 margin-y-10px">
+    <input asp-for="Keyword" placeholder="Keyword" class="w-100 theme-color-front-bg theme-color-back-text border-secondary border-1 border-start border-top" />
+    <select asp-for="Country" class="theme-color-front-bg theme-color-back-text border-secondary">
+      <option selected>Country</option>
+      @{
+        var offersCountries = (List<string>?)ViewData["Offers.Countries"];
+      }
+      @for (var i = 0; offersCountries != null && i < offersCountries.Count; i++)
+      {
+        <option value="@offersCountries[i]">@offersCountries[i]</option> 
+      }
     </select>
-    <select asp-for="City" class="form-select">
-        <option>City</option>
-        @{
-          var offersCities = (List<string>?)ViewData["Offers.Cities"];
-        }
-        @for (var i = 0; offersCities != null && i < offersCities.Count; i++)
-        {
-          <option value="@offersCities[i]">@offersCities[i]</option> 
-        }
+    <select asp-for="City" class="theme-color-front-bg theme-color-back-text border-secondary">
+      <option>City</option>
+      @{
+        var offersCities = (List<string>?)ViewData["Offers.Cities"];
+      }
+      @for (var i = 0; offersCities != null && i < offersCities.Count; i++)
+      {
+        <option value="@offersCities[i]">@offersCities[i]</option> 
+      }
     </select>
-    <input class="btn btn-primary btn-lg btn-block theme-color-front-text" type="submit" value="Search"/>
+    <input class="theme-color-front-bg theme-color-back-text border-secondary" style="border-radius: 5px;" type="submit" value="Search"/>
 </form>
 
 <ul class="offers">
@@ -94,13 +94,13 @@
         <div class="offers-li-items">@offerAllCurrent.Title</div>
         <div class="offers-li-description">@offerAllCurrent.Description</div>
         <div class="offers-li-images-container">
-          @{
-            var images = offerAllCurrent.Images.Split('|');
-            @for (var j = 0; images != null && j < images.Length; j++)
-            {
-              <img class="offers-li-images-item" src="@images[j]" />
-            }
-          }
+      @{
+        var images = offerAllCurrent.Images.Split('|');
+        @for (var j = 0; images != null && j < images.Length; j++)
+        {
+                  <img class="offers-li-images-item" src="@images[j]" />
+        }
+      }
         </div>
         <button class="offers-offer btn" onclick="ChageOfferId(@offerAllCurrent?.Id)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Offer</button>
       </li>
@@ -150,7 +150,7 @@
     // if there are more pages than the pagination size and the page index is not 1 then we display the first page in the pagination
     if (offersAll?.Total >= leftRightSize * 2 + 1 && start != null && start != 1)
     {
-      <a asp-action="Index"
+          <a asp-action="Index"
          asp-route-page="1"
          asp-route-keyword="@filter?.Keyword"
          asp-route-country="@filter?.Country"
@@ -162,7 +162,7 @@
     {
       if (i == offersAll?.Index)
       {
-        <a asp-action="Index"
+              <a asp-action="Index"
            asp-route-page="@i"
            asp-route-keyword="@filter?.Keyword"
            asp-route-country="@filter?.Country"
@@ -171,7 +171,7 @@
       }
       else
       {
-        <a asp-action="Index"
+              <a asp-action="Index"
            asp-route-page="@i"
            asp-route-keyword="@filter?.Keyword"
            asp-route-country="@filter?.Country"
@@ -182,7 +182,7 @@
     // if there are more pages than the pagination size and the page index is not the last one then we display the last page in the pagination
     if (offersAll?.Total >= leftRightSize * 2 + 1 && end != null && end != offersAll?.Total)
     {
-      <a asp-action="Index"
+          <a asp-action="Index"
          asp-route-page="@offersAll?.Total"
          asp-route-keyword="@filter?.Keyword"
          asp-route-country="@filter?.Country"
@@ -203,4 +203,4 @@
   @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
   }
-}
+  }

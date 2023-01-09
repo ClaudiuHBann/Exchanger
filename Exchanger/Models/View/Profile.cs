@@ -20,6 +20,8 @@ namespace Exchanger.Models.View
 
         public float Rating { get; set; }
 
+        public Profile() { }
+
         public Profile(string email, string country, float rating, string? avatar = null, string? name = null, string? description = null, string? phone = null, string? city = null, int? idAccount = null, int? id = null)
         {
             Avatar = avatar;

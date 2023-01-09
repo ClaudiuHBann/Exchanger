@@ -4,9 +4,9 @@ using Exchanger.Services;
 using Exchanger.Models.View;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exchanger.Controllers
 {
@@ -49,11 +49,11 @@ namespace Exchanger.Controllers
             return offers;
         }
 
-        (string country, string? city) GetOfferLocation(Offer offer)
+        async Task<(string country, string? city)> GetOfferLocation(Offer offer)
         {
             try
             {
-                var profile = _context.Profile.Where(profile => profile.Id == offer.IdProfile).First();
+                var profile = await _context.Profile.Where(profile => profile.Id == offer.IdProfile).FirstAsync();
                 return (profile.Country, profile.City);
             }
             catch (Exception exception)
@@ -63,14 +63,14 @@ namespace Exchanger.Controllers
             }
         }
 
-        (IQueryable<string>? countries, IQueryable<string>? cities) GetOfferLocationAll(IQueryable<Offer> offers)
+        async Task<(IQueryable<string>? countries, IQueryable<string>? cities)> GetOfferLocationAll(IQueryable<Offer> offers)
         {
             HashSet<string> countries = new();
             HashSet<string> cities = new();
 
             foreach (var offer in offers)
             {
-                var (country, city) = GetOfferLocation(offer);
+                var (country, city) = await GetOfferLocation(offer);
 
                 if (country != "")
                 {
@@ -97,27 +97,47 @@ namespace Exchanger.Controllers
         public async Task<IActionResult> Index(int? page, string? keyword, string? country, string? city)
         {
             var idProfile = HttpContext.Session.GetInt32("Profile.Id");
-            var offersAll = _context.Offer.Where(offer => offer.IdProfile != idProfile);
 
-            var (countries, cities) = GetOfferLocationAll(offersAll);
-            if (countries != null)
+            try
             {
-                ViewData["Offers.Countries"] = await countries.OrderBy(country => country).ToListAsync();
+                IQueryable<Offer> offersAll;
+                if (idProfile != null)
+                {
+                    offersAll = _context.Offer.Where(offer => offer.IdProfile != idProfile);
+                }
+                else
+                {
+                    offersAll = _context.Offer.Select(offer => offer);
+                }
+
+                var (countries, cities) = await GetOfferLocationAll(offersAll);
+                if (countries != null)
+                {
+                    ViewData["Offers.Countries"] = countries.OrderBy(country => country).ToList();
+                }
+                if (cities != null)
+                {
+                    ViewData["Offers.Cities"] = cities.OrderBy(city => city).ToList();
+                }
+
+                Filter filter = new(keyword, country, city);
+                ViewData["Offers.Filter"] = filter;
+
+                offersAll = FilterOffers(offersAll, filter);
+
+                ViewData["Offers.All"] = await ListPaginated<Offer>.CreateAsync(offersAll.OrderByDescending(offer => offer.Id), page ?? 1);
+                if (idProfile != null)
+                {
+                    ViewData["Offers.Mine"] = _context.Offer.Where(offer => offer.IdProfile == idProfile).OrderByDescending(offer => offer.Id).ToList();
+                }
+
+                return View(filter);
             }
-            if (cities != null)
+            catch (Exception exception)
             {
-                ViewData["Offers.Cities"] = await cities.OrderBy(city => city).ToListAsync();
+                Console.WriteLine(exception.Message);
+                return View(new Filter());
             }
-
-            Filter filter = new(keyword, country, city);
-            ViewData["Offers.Filter"] = filter;
-
-            offersAll = FilterOffers(offersAll, filter);
-
-            ViewData["Offers.All"] = await ListPaginated<Offer>.CreateAsync(offersAll.OrderByDescending(o => o.Id), page ?? 1);
-            ViewData["Offers.Mine"] = await _context.Offer.Where(o => o.IdProfile == idProfile).OrderByDescending(o => o.Id).ToListAsync();
-
-            return View(filter);
         }
 
         static string CreateQueryFromFilter(Filter filter)

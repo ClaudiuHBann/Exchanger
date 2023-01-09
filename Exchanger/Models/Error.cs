@@ -5,6 +5,8 @@ namespace Exchanger.Models
         public string? IdRequest { get; set; }
         public bool IdRequestShow => !string.IsNullOrEmpty(IdRequest);
 
+        public Error() { }
+
         public Error(string? idRequest)
         {
             IdRequest = idRequest;

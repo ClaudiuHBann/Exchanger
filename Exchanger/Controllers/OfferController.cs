@@ -58,22 +58,6 @@ namespace Exchanger.Controllers
             return Redirect("~/");
         }
 
-        public IActionResult YourOther()
-        {
-            var profileId = (int)HttpContext.Session.GetInt32("Profile.Id");
-            ViewData["Offers.YO"] = OfferToOfferUtility.GetOfferToOfferViewsYourOther(_context, profileId);
-
-            return View("~/Views/OfferOffer/YourOther.cshtml");
-        }
-
-        public IActionResult OtherYour()
-        {
-            var profileId = (int)HttpContext.Session.GetInt32("Profile.Id");
-            ViewData["Offers.OY"] = OfferToOfferUtility.GetOfferToOfferViewsOtherYour(_context, profileId);
-
-            return View("~/Views/OfferOffer/OtherYour.cshtml");
-        }
-
         // POST: Offer/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

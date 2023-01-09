@@ -10,6 +10,8 @@ namespace Exchanger.Models.View
         [ForeignKey("Offer")]
         public int IdOfferOffer { get; set; }
 
+        public OfferToOffer() { }
+
         public OfferToOffer(int idOffer, int idOfferOffer, int? id = null)
         {
             IdOffer = idOffer;

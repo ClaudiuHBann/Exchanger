@@ -9,6 +9,8 @@ namespace Exchanger.Models
         public Offer? Offer { get; set; } = null;
         public Offer? OfferToOffer { get; set; } = null;
 
+        public OfferToOfferView() { }
+
         public OfferToOfferView(int id, Offer offer, Offer offerToOffer)
         {
             Id = id;

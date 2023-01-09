@@ -1,7 +1,7 @@
 ﻿@model Exchanger.Models.View.Account
 
 @{
-    ViewData["Title"] = "Sign Up";
+  ViewData["Title"] = "Sign Up";
 }         
 
 <form asp-action="SignUp" class="vh-100">
@@ -33,7 +33,7 @@
             <input class="btn btn-primary btn-lg btn-block theme-color-front-text" type="submit" value="Sign Up"/>
 
             <div class="text-center" style="margin-top:25px;">
-                <p style="color: #999999;">Already have an account? <a href="~/Account/LogIn">Log In</a></p>
+                <p style="color: #999999;">Already have an account? <a href="~/Account/Login">Log In</a></p>
             </div>
 
           </div>
@@ -44,5 +44,7 @@
 </form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
 }

@@ -13,6 +13,8 @@ namespace Exchanger.Models.View
 
         public string Images { get; set; } // a list of URLs separated by '|'
 
+        public Offer() { }
+
         public Offer(string title, string? description, string images, int? idProfile = null, int? id = null)
         {
             Title = title;

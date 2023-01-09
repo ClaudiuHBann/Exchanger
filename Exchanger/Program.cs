@@ -63,4 +63,18 @@ namespace Exchanger
          - seed with random photos (people & items)
          - test everything
          - clean up the code
+
+         - make the home search button more rounder with smaller border or none
+         - home user unknown doesn't work
+         - offer offer button more rounder
+         - offer image list no margin bottom
+         - home use theme for the pagination
+         - center home pagination
+         - 
+         - 
+         - 
+         - 
+         - 
+         - 
+         - viewdata constants with an initializator
 */

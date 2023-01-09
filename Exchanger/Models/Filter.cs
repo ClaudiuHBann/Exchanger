@@ -6,6 +6,8 @@
         public string? Country { get; set; } = null;
         public string? City { get; set; } = null;
 
+        public Filter() { }
+
         public Filter(string? keyword = null, string? country = null, string? city = null)
         {
             Keyword = keyword;
