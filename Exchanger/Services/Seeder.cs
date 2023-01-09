@@ -103,7 +103,7 @@ namespace Exchanger.Services
                     acc.Email,
                     "Romania",
                     5f,
-                    "../image/userUnknown.png",
+                    "../../image/userUnknown.png",
                     "Claudiu HBann",
                     "Nu risti, nu pierzi.",
                     "0770337470",

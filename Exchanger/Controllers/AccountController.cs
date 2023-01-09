@@ -17,19 +17,11 @@ namespace Exchanger.Controllers
             _context = context;
         }
 
-        static bool once = false;
         [HttpGet]
         [Route("Account/")]
         [Route("Account/Login")]
         public async Task<IActionResult> Index()
         {
-            if (!once)
-            {
-                once = true;
-
-                await Login(new() { Email = "nu@poate.da", Password = "nu@poate.da" });
-            }
-
             var accountActive = HttpContext.Session.GetInt32("Account.Active");
             var profileId = HttpContext.Session.GetInt32("Account.Id");
             if (accountActive != null && accountActive == 1 && profileId != null)
@@ -38,6 +30,7 @@ namespace Exchanger.Controllers
             }
             else
             {
+                //return await Login(new() { Email = "a@a.a", Password = "a@a.a" });
                 return View("Login");
             }
         }

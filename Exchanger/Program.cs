@@ -63,6 +63,5 @@ namespace Exchanger
          - seed with random photos (people & items)
          - CLEAN_UP + COMMENTS
 
-         - Beautify views
-         - test everything
+         - Beautify and test Home
 */
