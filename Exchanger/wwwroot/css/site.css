@@ -6,6 +6,15 @@ a {
     text-decoration: none;
 }
 
+input {
+    background-color: #1e1e1e !important;
+    color: #999999 !important;
+}
+
+button {
+    font-size: medium !important;
+}
+
 .container-main {
     margin: 4.33rem 1rem 0 1rem;
 }
