@@ -19,11 +19,15 @@ div div form div.form-group {
     margin-top: 10px;
 }
 
+div dl.row dt, div dl.row dd {
+    color: #999999;
+}
+
 label {
     color: #999999;
 }
 
-h1 {
+h1, h3 {
     color: #999999;
 }
 

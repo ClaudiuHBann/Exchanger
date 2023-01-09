@@ -1,15 +1,14 @@
 ﻿@model Exchanger.Models.View.Offer
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete - Offer";
 }
 
-<h1>Delete</h1>
-
+<h1>Delete - Offer</h1>
 <h3>Are you sure you want to delete this?</h3>
+<hr />
+
 <div>
-    <h4>Offer</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdProfile)
@@ -39,6 +38,10 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
+        <input type="hidden" asp-for="IdProfile" />
+        <hr />
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
     </form>
 </div>

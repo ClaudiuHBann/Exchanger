@@ -95,7 +95,7 @@ namespace Exchanger.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdProfile,Title,Description,Images")] Offer offer)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Images")] Offer offer)
         {
             if (id != offer.Id)
             {
@@ -132,13 +132,14 @@ namespace Exchanger.Controllers
                 {
                     return NotFound();
                 }
+
+                return View(offer);
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
+                return NotFound();
             }
-
-            return Redirect("~/Profile");
         }
 
         [HttpPost, ActionName("Delete")]
