@@ -51,7 +51,7 @@ namespace Exchanger.Models.View
             account.Email,
             "Unknown",
             1f,
-            "~/image/userUnknown.png",
+            "../../image/userUnknown.png",
             "Unknown",
             "Unknown",
             "Unknown",

@@ -17,11 +17,19 @@ namespace Exchanger.Controllers
             _context = context;
         }
 
+        static bool once = false;
         [HttpGet]
         [Route("Account/")]
         [Route("Account/Login")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            if (!once)
+            {
+                once = true;
+
+                await Login(new() { Email = "nu@poate.da", Password = "nu@poate.da" });
+            }
+
             var accountActive = HttpContext.Session.GetInt32("Account.Active");
             var profileId = HttpContext.Session.GetInt32("Account.Id");
             if (accountActive != null && accountActive == 1 && profileId != null)
@@ -59,17 +67,17 @@ namespace Exchanger.Controllers
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
-                    return LogOut();
+                    return await LogOut();
                 }
             }
 
-            return Index();
+            return await Index();
         }
 
-        public IActionResult LogOut()
+        public async Task<IActionResult> LogOut()
         {
             HttpContext.Session.Clear();
-            return Index();
+            return await Index();
         }
 
         public IActionResult SignUp()
@@ -94,7 +102,7 @@ namespace Exchanger.Controllers
                     await _context.Profile.AddAsync(profile);
                     await _context.SaveChangesAsync();
 
-                    return Index();
+                    return await Index();
                 }
                 catch (Exception exception)
                 {

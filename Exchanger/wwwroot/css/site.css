@@ -15,6 +15,22 @@ button {
     font-size: medium !important;
 }
 
+div div form div.form-group {
+    margin-top: 10px;
+}
+
+label {
+    color: #999999;
+}
+
+h1 {
+    color: #999999;
+}
+
+hr {
+    color: #e1e1e1;
+}
+
 .container-main {
     margin: 4.33rem 1rem 0 1rem;
 }
