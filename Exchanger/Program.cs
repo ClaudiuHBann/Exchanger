@@ -62,6 +62,4 @@ namespace Exchanger
     TODO:
          - seed with random photos (people & items)
          - CLEAN_UP + COMMENTS
-
-         - Beautify and test Home
 */

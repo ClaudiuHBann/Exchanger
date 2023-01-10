@@ -30,21 +30,21 @@
             var offersMine = (List<Exchanger.Models.View.Offer>?)ViewData["Offers.Mine"];
             for (var i = 0; offersMine != null && i < offersMine.Count; i++)
             {
-                    <li>
-                      <img class="offers-li-profile-image" src="image/userUnknown.png"/>
-                      <div class="offers-li-items">@offersMine[i].Title</div>
-                      <div class="offers-li-description">@offersMine[i].Description</div>
-                      <div class="offers-li-images-container">
-                    @{
+                      <li>
+                        <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+                        <div class="offers-li-items">@offersMine[i].Title</div>
+                        <div class="offers-li-description">@offersMine[i].Description</div>
+                        <div class="offers-li-images-container">
+                      @{
                     var images = offersMine[i].Images.Split('|');
-                        @for (int j = 0; images != null && j < images.Length; j++)
+                            @for (int j = 0; images != null && j < images.Length; j++)
                     {
-                                <img class="offers-li-images-item" src="@images[j]" />     
+                                    <img class="offers-li-images-item" src="@images[j]" />     
                     }
-                    }
-                      </div>
-                      <a id="idOffer@(i)" class="offers-offer btn" href="~/Offer/idOffer/@offersMine[i].Id">Offer</a>
-                    </li>
+                      }
+                        </div>
+                        <a id="idOffer@(i)" class="offers-offer btn" href="~/Offer/idOffer/@offersMine[i].Id">Offer</a>
+                      </li>
             }
           }
         </ul>
@@ -91,21 +91,21 @@
     for (var i = 0; offersAll != null && i < offersAll.Count; i++)
     {
       var offerAllCurrent = offersAll[i];
-        <li>
-          <img class="offers-li-profile-image" src="image/userUnknown.png"/>
-          <div class="offers-li-items">@offerAllCurrent.Title</div>
-          <div class="offers-li-description">@offerAllCurrent.Description</div>
-          <div class="offers-li-images-container">
-        @{
+          <li>
+            <img class="offers-li-profile-image" src="image/userUnknown.png"/>
+            <div class="offers-li-items">@offerAllCurrent.Title</div>
+            <div class="offers-li-description">@offerAllCurrent.Description</div>
+            <div class="offers-li-images-container">
+          @{
         var images = offerAllCurrent.Images.Split('|');
-            @for (var j = 0; images != null && j < images.Length; j++)
+                @for (var j = 0; images != null && j < images.Length; j++)
         {
-                      <img class="offers-li-images-item" src="@images[j]" />
+                          <img class="offers-li-images-item" src="@images[j]" />
         }
-        }
-          </div>
-          <button class="offers-offer btn" onclick="ChageOfferId(@offersMine?.Count, @offerAllCurrent?.Id)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Offer</button>
-        </li>
+          }
+            </div>
+            <button class="offers-offer btn" onclick="ChageOfferId(@offersMine?.Count, @offerAllCurrent?.Id)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Offer</button>
+          </li>
     }
   }
 </ul>
@@ -115,13 +115,13 @@
   var nextDisabled = offersAll != null && !offersAll.HasPageNext ? "disabled" : "";
 }
 
-<div class="pagination">
+<div class="pagination-me">
     <a asp-action="Index"
        asp-route-page="@(offersAll?.Index - 1)"
        asp-route-keyword="@filter?.Keyword"
        asp-route-country="@filter?.Country"
        asp-route-city="@filter?.City"
-       class="btn btn-default @prevDisabled">Previous</a>
+       class="btn btn-default theme-color-front-bg theme-color-back-text @prevDisabled">Previous</a>
 
   @{
     var leftRightSize = 2; // how many pages to show on left and right from current page index
@@ -152,44 +152,44 @@
     // if there are more pages than the pagination size and the page index is not 1 then we display the first page in the pagination
     if (offersAll?.Total >= leftRightSize * 2 + 1 && start != null && start != 1)
     {
-            <a asp-action="Index"
+              <a asp-action="Index"
          asp-route-page="1"
          asp-route-keyword="@filter?.Keyword"
          asp-route-country="@filter?.Country"
          asp-route-city="@filter?.City"
-         class="btn btn-default">1</a>
+         class="btn btn-default theme-color-front-bg theme-color-back-text">1</a>
     }
     // we create the pages
     for (var i = start; start != null && end != null && i <= end; i++)
     {
       if (i == offersAll?.Index)
       {
-                <a asp-action="Index"
+                  <a asp-action="Index"
            asp-route-page="@i"
            asp-route-keyword="@filter?.Keyword"
            asp-route-country="@filter?.Country"
            asp-route-city="@filter?.City"
-           class="btn btn-default">@i</a>
+           class="btn btn-default theme-color-front-bg theme-color-back-text">@i</a>
       }
       else
       {
-                <a asp-action="Index"
+                  <a asp-action="Index"
            asp-route-page="@i"
            asp-route-keyword="@filter?.Keyword"
            asp-route-country="@filter?.Country"
            asp-route-city="@filter?.City"
-           class="btn btn-default">@i</a>
+           class="btn btn-default theme-color-front-bg theme-color-back-text">@i</a>
       }
     }
     // if there are more pages than the pagination size and the page index is not the last one then we display the last page in the pagination
     if (offersAll?.Total >= leftRightSize * 2 + 1 && end != null && end != offersAll?.Total)
     {
-            <a asp-action="Index"
+              <a asp-action="Index"
          asp-route-page="@offersAll?.Total"
          asp-route-keyword="@filter?.Keyword"
          asp-route-country="@filter?.Country"
          asp-route-city="@filter?.City"
-         class="btn btn-default">@offersAll?.Total</a>
+         class="btn btn-default theme-color-front-bg theme-color-back-text">@offersAll?.Total</a>
     }
   }
 
@@ -198,7 +198,7 @@
        asp-route-keyword="@filter?.Keyword"
        asp-route-country="@filter?.Country"
        asp-route-city="@filter?.City"
-       class="btn btn-default @nextDisabled">Next</a>
+       class="btn btn-default theme-color-front-bg theme-color-back-text @nextDisabled">Next</a>
 </div>
 
 @section Scripts {
